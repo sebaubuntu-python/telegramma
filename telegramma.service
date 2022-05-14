@@ -1,0 +1,17 @@
+[Unit]
+Description=telegramma service
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+# Change WorkingDirectory with the directory where you have telegramma configs
+WorkingDirectory=/home/seba/Scrivania/Repositories/telegramma
+ExecStart=/usr/bin/python3.9 -m telegramma
+Type=simple
+Restart=always
+RestartSec=5
+# If you want to execute it as non-root (recommended)
+User=seba
+
+[Install]
+WantedBy=multi-user.target
