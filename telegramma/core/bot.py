@@ -64,7 +64,8 @@ class Bot:
 			if not module:
 				return None
 
-			self.modules[module_name] = ModuleInstance(module)
+			self.modules[module_name] = ModuleInstance(module, self.max_module_group)
+			self.max_module_group += 1
 
 		return self.modules[module_name]
 
