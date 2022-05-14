@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
+"""telegramma module."""
 
 from pathlib import Path
 
