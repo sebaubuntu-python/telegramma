@@ -8,8 +8,6 @@
 from telegram import BotCommand
 from telegram.ext import Handler
 
-from telegramma.api._version import API_VERSION
-
 class Module:
 	"""telegramma module interface."""
 	NAME: str
