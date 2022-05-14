@@ -22,5 +22,6 @@ class Module:
 	"""List of commands which the bot provides."""
 
 	def __init__(self):
+		"""Initialize the module."""
 		assert self.NAME, "Module name is not defined."
 		assert self.VERSION, "Module version is not defined."
