@@ -18,6 +18,6 @@ config = {
 		# DeepL API key
 		# type: str
 		"deepl_api_key": "",
-	}
+	},
 	# [END]
 }
