@@ -11,6 +11,7 @@ repository = "https://github.com/SebaUbuntu/telegramma"
 python = "^3.9"
 python-telegram-bot = "20.0a0"
 sebaubuntu-libs = "^1.0.6"
+twrpdtgen = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
 

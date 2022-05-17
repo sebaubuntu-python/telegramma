@@ -19,5 +19,23 @@ config = {
 		# type: str
 		"deepl_api_key": "",
 	},
+
+	"twrpdtgen": {
+		# GitHub username
+		# type: str
+		"github_username": "",
+
+		# GitHub token
+		# type: str
+		"github_token": "",
+
+		# GitHub organization
+		# type: str
+		"github_org": "",
+
+		# Chat ID where generated device trees info will be sent
+		# type: int
+		"chat_id": 0,
+	},
 	# [END]
 }
