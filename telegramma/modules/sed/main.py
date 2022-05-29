@@ -61,4 +61,4 @@ async def sed_handler(update: Update, context: CallbackContext):
 	if not result:
 		result = "Result is an empty string you fuck"
 
-	await update.message.reply_text(result)
+	await update.message.reply_to_message.reply_text(result)
