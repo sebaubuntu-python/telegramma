@@ -251,7 +251,7 @@ idna2008 = ["idna"]
 
 [[package]]
 name = "sebaubuntu-libs"
-version = "1.0.6"
+version = "1.0.7"
 description = "SebaUbuntu's shared libs"
 category = "main"
 optional = false
@@ -471,8 +471,8 @@ rfc3986 = [
     {file = "rfc3986-1.5.0.tar.gz", hash = "sha256:270aaf10d87d0d4e095063c65bf3ddbc6ee3d0b226328ce21e036f946e421835"},
 ]
 sebaubuntu-libs = [
-    {file = "sebaubuntu_libs-1.0.6-py3-none-any.whl", hash = "sha256:b223a4cf68c7dcec98c4e721a9bb07560e0f80a03e40372a7db3a17865982513"},
-    {file = "sebaubuntu_libs-1.0.6.tar.gz", hash = "sha256:6ff651330436818f4b51335806991fb6d58cc7465e469261df374f4b911b820e"},
+    {file = "sebaubuntu_libs-1.0.7-py3-none-any.whl", hash = "sha256:b2d2512563b251b03c386818057ae3a396f0d7158cd75eaa7a55dba3bb7b04f5"},
+    {file = "sebaubuntu_libs-1.0.7.tar.gz", hash = "sha256:248bcacd5bbaf7601c2c7b6202bbf917ddc06a5ef61ec860f75506d563d96594"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
