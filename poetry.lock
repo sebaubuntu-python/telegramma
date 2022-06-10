@@ -70,7 +70,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "deepl"
-version = "1.7.0"
+version = "1.8.0"
 description = "Python library for the DeepL API."
 category = "main"
 optional = false
@@ -377,8 +377,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 deepl = [
-    {file = "deepl-1.7.0-py3-none-any.whl", hash = "sha256:0a59b99326523867a526a6b5ad0d95d63afdeacb689be25855da5c65ecc7077d"},
-    {file = "deepl-1.7.0.tar.gz", hash = "sha256:32e4b9d6fbd8825c4a7e96841b2722dd200b6bf4afa6d0679987b8fb34f7b3f5"},
+    {file = "deepl-1.8.0-py3-none-any.whl", hash = "sha256:fc5eed0c5d0bb5ed472ef357732e26574ea294a8d04dcc368fd7ad50fd7567f0"},
+    {file = "deepl-1.8.0.tar.gz", hash = "sha256:fc89a931acc179b300ae3ecbd501667b2c0777b226ef4e0655fe893f7ee0789b"},
 ]
 gitdb = [
     {file = "gitdb-4.0.9-py3-none-any.whl", hash = "sha256:8033ad4e853066ba6ca92050b9df2f89301b8fc8bf7e9324d412a63f8bf1a8fd"},
