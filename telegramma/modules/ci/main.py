@@ -1,0 +1,46 @@
+#
+# Copyright (C) 2022 Sebastiano Barezzi
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+from importlib import import_module
+from telegram import Update
+from telegram.ext import CallbackContext
+from threading import Lock
+from typing import Type
+
+from telegramma.api import user_is_admin
+from telegramma.modules.ci.jobs import JOB_MODULES_PREFIX
+from telegramma.modules.ci.types.job import BaseJob
+from telegramma.modules.ci.types.parser import CIParser
+
+_ci_lock = Lock()
+
+async def ci(update: Update, context: CallbackContext):
+	if not user_is_admin(update.message.from_user.id):
+		await update.message.reply_text("Error: You are not authorized to run CI")
+		return
+
+	if not context.args:
+		await update.message.reply_text("Error: No CI job specified")
+		return
+
+	job_name, job_args = context.args[0], context.args[1:]
+
+	try:
+		job_module = import_module(f"{JOB_MODULES_PREFIX}.{job_name}", package="Job")
+	except ModuleNotFoundError as e:
+		await update.message.reply_text(f"Error: No CI job named {job_name}")
+		return
+
+	job_class: Type[BaseJob] = job_module.Job
+	parser = CIParser(prog=f"/ci {job_name}")
+	try:
+		job = job_class(update, context, parser, job_args)
+	except Exception as e:
+		await update.message.reply_text(str(e))
+		return
+
+	with _ci_lock:
+		await job.start()
