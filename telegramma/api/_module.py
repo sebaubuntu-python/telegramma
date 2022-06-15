@@ -6,7 +6,7 @@
 """telegramma module model."""
 
 from telegram import BotCommand
-from telegram.ext import Handler
+from telegram.ext import BaseHandler
 
 class Module:
 	"""telegramma module interface."""
@@ -16,7 +16,7 @@ class Module:
 	"""Module version."""
 	CORE: bool = False
 	"""The module provides core functionality."""
-	HANDLERS: list[Handler] = []
+	HANDLERS: list[BaseHandler] = []
 	"""List of handlers."""
 	COMMANDS: list[BotCommand] = []
 	"""List of commands which the bot provides."""
