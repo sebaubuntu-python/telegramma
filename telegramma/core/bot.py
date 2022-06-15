@@ -5,7 +5,6 @@
 #
 """telegramma bot."""
 
-import asyncio
 from os import execl, getpid, kill
 from signal import SIGTERM
 import sys
@@ -25,28 +24,27 @@ class ModuleInstance:
 
 class Bot:
 	def __init__(self, token: str) -> None:
-		self.application = (Application.builder()
-		                    .token(token)
-		                    .context_types(ContextTypes(bot_data=lambda: self))
-		                    .build())
-
 		self._should_restart = False
 
-		self.max_module_group = 0
-
 		self.modules: dict[str, ModuleInstance] = {}
+		self.max_module_group = 0
 		for module in get_all_modules():
 			self.modules[module.NAME] = ModuleInstance(module, self.max_module_group)
 			self.max_module_group += 1
 
-		self.application.add_error_handler(error_handler)
+		self.application = (Application.builder()
+		                    .token(token)
+		                    .context_types(ContextTypes(bot_data=lambda: self))
+		                    .post_init(self._post_init)
+		                    .build())
 
-		loop = asyncio.get_event_loop()
+	async def _post_init(self, application: Application):
+		application.add_error_handler(error_handler)
 
 		for module_name in self.modules:
-			loop.run_until_complete(self.toggle_module(module_name, True, False))
+			await self.toggle_module(module_name, True, False)
 
-		loop.run_until_complete(self.update_my_commands())
+		await self.update_my_commands()
 
 	def run(self) -> None:
 		self.application.run_polling()
