@@ -10,7 +10,7 @@ from pathlib import Path
 from threading import Lock
 
 class _DatabaseFile:
-	"""HomeBot database file class."""
+	"""telegramma database file class."""
 	__file_name = "data.json"
 
 	__file_path = Path(__file_name)
@@ -30,7 +30,7 @@ class _DatabaseFile:
 			cls.__file_path.write_text(json.dumps(d, sort_keys=True))
 
 class Database:
-	"""HomeBot database class.
+	"""telegramma database class.
 
 	This class is used to save persistent data.
 	"""
