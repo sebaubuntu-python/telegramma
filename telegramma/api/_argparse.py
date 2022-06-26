@@ -6,6 +6,7 @@
 
 from argparse import ArgumentParser
 from gettext import gettext
+from shlex import split
 
 class TelegramArgumentParser(ArgumentParser):
 	"""
@@ -30,6 +31,13 @@ class TelegramArgumentParser(ArgumentParser):
 		super().__init__(*args, **kwargs)
 
 		self._msg_buffer = []
+
+	def parse_known_args(self, args=None, namespace=None):
+		args = args or []
+
+		new_args = split(" ".join(args))
+
+		return super().parse_known_args(new_args, namespace)
 
 	def _print_message(self, message, file=None):
 		if message:
