@@ -8,6 +8,9 @@
 from telegramma.api._admin import (
 	user_is_admin,
 )
+from telegramma.api._argparse import (
+	TelegramArgumentParser,
+)
 from telegramma.api._config import (
 	get_config_namespace,
 )
@@ -38,4 +41,7 @@ __all__ = [
 	'get_config_namespace',
 	'log_to_logging_chat',
 	'user_is_admin',
+
+	# 2
+	'TelegramArgumentParser',
 ]

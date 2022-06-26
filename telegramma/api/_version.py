@@ -10,7 +10,7 @@ from telegramma import __version__
 VERSION: str = __version__
 """telegramma version."""
 
-API_VERSION: int = 1
+API_VERSION: int = 2
 """The current API version."""
 
 def assert_min_api_version(min_api_version: int) -> None:
