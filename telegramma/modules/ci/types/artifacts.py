@@ -39,7 +39,7 @@ class Artifacts(dict):
 
 		text = f"Uploaded {artifact_uploaded} out of {artifact_total} artifact(s)\n"
 		text += "\n".join([
-			f"{i}) {artifact}: {self[artifact]}"
+			f"{i}) {artifact.name}: {self[artifact]}"
 			for i, artifact in enumerate(self.keys(), 1)
 		])
 
