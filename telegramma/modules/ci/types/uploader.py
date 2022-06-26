@@ -17,7 +17,7 @@ class BaseUploader:
 		self.base_dir = Path(self.profile.get("base_dir", ""))
 		self.host = self.profile.get("host")
 		self.port = self.profile.get("port")
-		self.server = self.host if self.port is None else f"{self.host}:{self.port}"
+		self.server = f"{self.host}:{self.port}" if self.port else self.host
 		self.username = self.profile.get("username")
 		self.password = self.profile.get("password")
 

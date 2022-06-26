@@ -56,8 +56,8 @@ config = {
 				"host": "",
 
 				# If it's a remote method, the TCP port
-				# type: str
-				"port": "",
+				# type: int
+				"port": 0,
 
 				# If it's a remote method, the username used for authentication
 				# type: str
