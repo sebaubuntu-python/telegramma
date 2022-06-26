@@ -10,10 +10,9 @@ from telegram.ext import CallbackContext
 from threading import Lock
 from typing import Type
 
-from telegramma.api import user_is_admin
+from telegramma.api import TelegramArgumentParser, user_is_admin
 from telegramma.modules.ci.jobs import JOB_MODULES_PREFIX
 from telegramma.modules.ci.types.job import BaseJob
-from telegramma.modules.ci.types.parser import CIParser
 
 _ci_lock = Lock()
 
@@ -35,7 +34,7 @@ async def ci(update: Update, context: CallbackContext):
 		return
 
 	job_class: Type[BaseJob] = job_module.Job
-	parser = CIParser(prog=f"/ci {job_name}")
+	parser = TelegramArgumentParser(prog=f"/ci {job_name}")
 	try:
 		job = job_class(update, context, parser, job_args)
 	except Exception as e:

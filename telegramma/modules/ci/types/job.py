@@ -8,13 +8,13 @@ from typing import List
 from telegram import Update
 from telegram.ext import CallbackContext
 
-from telegramma.modules.ci.types.parser import CIParser
+from telegramma.api import TelegramArgumentParser
 
 class BaseJob:
 	def __init__(self,
 				 update: Update,
 				 context: CallbackContext,
-				 parser: CIParser,
+				 parser: TelegramArgumentParser,
 				 args: List[str],
 				) -> None:
 		self.update = update

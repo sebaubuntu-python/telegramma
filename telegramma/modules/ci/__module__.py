@@ -6,7 +6,7 @@
 
 from telegramma.api import Module, assert_min_api_version
 
-assert_min_api_version(1)
+assert_min_api_version(2)
 
 from telegram import BotCommand
 from telegram.ext import CommandHandler
