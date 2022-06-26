@@ -6,6 +6,7 @@
 
 from requests import get
 from typing import Generator, List, Union
+from urllib.request import pathname2url
 
 class Image:
 	"""Image result."""
@@ -90,7 +91,10 @@ class SenpyClubAPI:
 		"""
 		images = []
 
-		for image in cls._get_senpy_club_api_result(f"language/{language}") or []:
+		# Handle cases like C#
+		language_url = pathname2url(language)
+
+		for image in cls._get_senpy_club_api_result(f"language/{language_url}") or []:
 			images.append(Image(language, image))
 
 		return images
