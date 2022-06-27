@@ -72,7 +72,8 @@ class SenpyClubAPI:
 		Returns the case sensitive string if supported, None otherwise.
 		To avoid useless API calls, you can pass a list of supported languages.
 		"""
-		languages = cls.get_languages()
+		if languages is None:
+			languages = cls.get_languages()
 
 		language_casefolded = language.casefold()
 		for l in languages:
