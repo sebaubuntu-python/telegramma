@@ -70,4 +70,4 @@ class Artifacts(dict):
 		await _update_post("Done")
 
 	def get_artifacts_on_status(self, status: ArtifactStatus):
-		return [artifact for artifact in self if self[artifact] is not status]
+		return [artifact for artifact in self if self[artifact] is status]
