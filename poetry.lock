@@ -208,7 +208,7 @@ socks = ["socksio (>=1.0.0,<2.0.0)"]
 
 [[package]]
 name = "humanize"
-version = "4.2.1"
+version = "4.2.2"
 description = "Python humanize utilities"
 category = "main"
 optional = false
@@ -644,8 +644,8 @@ httpx = [
     {file = "httpx-0.23.0.tar.gz", hash = "sha256:f28eac771ec9eb4866d3fb4ab65abd42d38c424739e80c08d8d20570de60b0ef"},
 ]
 humanize = [
-    {file = "humanize-4.2.1-py3-none-any.whl", hash = "sha256:895af56cfc63e1d453df6899d3f13861ecdef23e02407d2a84741561210416da"},
-    {file = "humanize-4.2.1.tar.gz", hash = "sha256:c8caa86a3e35fa60a6f31674bed2dcaf3a8495958880a00ad836226e0e6755b3"},
+    {file = "humanize-4.2.2-py3-none-any.whl", hash = "sha256:fd36c627eee0d2cea22a1dee6d4ff8d4ad5a0b03d3184a4c42967945fa350215"},
+    {file = "humanize-4.2.2.tar.gz", hash = "sha256:a45cb64bb7387b3f0f5d69c2d74376ecc1549eb89bc619dfb22c7e98b6e8c164"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
