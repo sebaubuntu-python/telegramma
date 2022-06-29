@@ -22,6 +22,7 @@ ADDITIONAL_ARTIFACTS = [
 	"boot.img",
 	"dtbo.img",
 	"recovery.img",
+	"super_empty.img",
 	"vbmeta.img",
 	"vendor_boot.img",
 ]
