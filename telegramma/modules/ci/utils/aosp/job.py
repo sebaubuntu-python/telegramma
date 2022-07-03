@@ -24,6 +24,8 @@ ADDITIONAL_ARTIFACTS = [
 	"recovery.img",
 	"super_empty.img",
 	"vbmeta.img",
+	"vbmeta_system.img",
+	"vbmeta_vendor.img",
 	"vendor_boot.img",
 ]
 
