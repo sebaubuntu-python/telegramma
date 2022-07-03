@@ -48,8 +48,6 @@ class AOSPJob(BaseJob):
 	# These next 2 values are needed for lunch (e.g. "lineage"_whyred-"userdebug")
 	lunch_prefix: str
 	lunch_suffix: str = "userdebug"
-	# Target to build (e.g. to build a ROM's OTA package, use "bacon" or "otapackage", for a recovery project, use "recoveryimage")
-	build_target: str = "bacon"
 	# Regex to extract date from zip name, empty string to just use full name minus ".zip"
 	date_regex: str = None
 
@@ -94,7 +92,6 @@ class AOSPJob(BaseJob):
 			"--sources", self.project_dir,
 			"--lunch_prefix", self.lunch_prefix,
 			"--lunch_suffix", self.lunch_suffix,
-			"--build_target", self.build_target,
 			"--clean", self.clean_type,
 			"--with_gms", str(self.parsed_args.with_gms),
 			"--repo_sync", str(self.parsed_args.repo_sync),

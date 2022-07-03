@@ -38,10 +38,6 @@ while [ "${#}" -gt 0 ]; do
 			CI_LUNCH_SUFFIX="${2}"
 			shift
 			;;
-		--build_target )
-			CI_BUILD_TARGET="${2}"
-			shift
-			;;
 		--clean )
 			CI_CLEAN="${2}"
 			shift
@@ -119,7 +115,7 @@ if [ "${CI_CLEAN}" != "" ] && [ "${CI_CLEAN}" != "none" ]; then
 	fi
 fi
 
-mka "${CI_BUILD_TARGET}" "-j$(nproc --all)" 2>&1 | tee build_log.txt
+mka 2>&1 | tee build_log.txt
 CI_BUILD_STATUS=$?
 if [ ${CI_BUILD_STATUS} != 0 ]; then
 	exit "${BUILD_FAILED}"
