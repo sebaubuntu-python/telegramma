@@ -75,7 +75,7 @@ class Bot:
 		if module_instance.enabled == enable:
 			raise ValueError(f"Trying to disable module {module_name} that isn't enabled")
 
-		if not enable and module_instance.module.core:
+		if not enable and module_instance.module.CORE:
 			raise ValueError(f"Trying to disable core module {module_name}")
 
 		for handler in module_instance.module.HANDLERS:
