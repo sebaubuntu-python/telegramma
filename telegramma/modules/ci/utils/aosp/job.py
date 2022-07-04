@@ -153,6 +153,7 @@ class AOSPJob(BaseJob):
 
 		zip_filename = list(self.device_out_dir.glob(self.zip_name))
 		if not zip_filename:
+			post_manager.update("Upload failed: No zip file found")
 			return
 
 		zip_filename = zip_filename[0].name
