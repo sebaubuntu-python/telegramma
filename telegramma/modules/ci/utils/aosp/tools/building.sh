@@ -119,7 +119,7 @@ if [ "${CI_CLEAN}" != "" ] && [ "${CI_CLEAN}" != "none" ]; then
 	fi
 fi
 
-mka "${CI_BUILD_TARGET}" "-j$(nproc --all)" 2>&1 | tee build_log.txt
+mka "${CI_BUILD_TARGET}" droidcore "-j$(nproc --all)" 2>&1 | tee build_log.txt
 CI_BUILD_STATUS=$?
 if [ ${CI_BUILD_STATUS} != 0 ]; then
 	exit "${BUILD_FAILED}"
