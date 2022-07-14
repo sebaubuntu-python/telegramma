@@ -2,7 +2,7 @@
 
 from telegramma.modules.ci.utils.aosp.job import AOSPJob
 
-class Project(AOSPJob):
+class Job(AOSPJob):
 	name = "Fluid"
 	version = "2.x"
 	android_version = "12"

@@ -2,7 +2,7 @@
 
 from telegramma.modules.ci.utils.aosp.job import AOSPJob
 
-class Project(AOSPJob):
+class Job(AOSPJob):
 	name = "LineageOS"
 	version = "18.1"
 	android_version = "11"
