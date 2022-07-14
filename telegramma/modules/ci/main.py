@@ -7,14 +7,12 @@
 from importlib import import_module
 from telegram import Update
 from telegram.ext import CallbackContext
-from threading import Lock
 from typing import Type
 
 from telegramma.api import TelegramArgumentParser, user_is_admin
 from telegramma.modules.ci.jobs import JOB_MODULES_PREFIX
 from telegramma.modules.ci.types.job import BaseJob
-
-_ci_lock = Lock()
+from telegramma.modules.ci.types.queue import put_job
 
 async def ci(update: Update, context: CallbackContext):
 	if not user_is_admin(update.message.from_user.id):
@@ -41,5 +39,5 @@ async def ci(update: Update, context: CallbackContext):
 		await update.message.reply_text(str(e))
 		return
 
-	with _ci_lock:
-		await job.start()
+	await put_job(job)
+	await update.message.reply_text(f"Job added to queue")

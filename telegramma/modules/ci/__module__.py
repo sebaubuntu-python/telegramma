@@ -14,6 +14,7 @@ from telegram.ext import CommandHandler
 from telegramma.modules.ci.main import (
 	ci,
 )
+from telegramma.modules.ci.types.queue import ci_task
 
 class CIModule(Module):
 	NAME = "ci"
@@ -23,6 +24,9 @@ class CIModule(Module):
 	]
 	COMMANDS = [
 		BotCommand("ci", "Start a CI job"),
+	]
+	TASKS = [
+		ci_task,
 	]
 
 module = CIModule()
