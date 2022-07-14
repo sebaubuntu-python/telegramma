@@ -92,8 +92,10 @@ class Bot:
 	async def update_my_commands(self):
 		commands = []
 
-		for module_name in self.modules:
-			module = get_module(module_name)
-			commands.extend(module.COMMANDS)
+		for module_instance in self.modules.values():
+			if not module_instance.enabled:
+				continue
+
+			commands.extend(module_instance.module.COMMANDS)
 
 		await self.application.bot.set_my_commands(commands)
