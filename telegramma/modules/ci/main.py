@@ -12,7 +12,7 @@ from typing import Type
 from telegramma.api import TelegramArgumentParser, user_is_admin
 from telegramma.modules.ci.jobs import JOB_MODULES_PREFIX
 from telegramma.modules.ci.types.job import BaseJob
-from telegramma.modules.ci.types.queue import put_job
+from telegramma.modules.ci.types.queue import format_queue_list, put_job
 
 async def ci(update: Update, context: CallbackContext):
 	if not user_is_admin(update.message.from_user.id):
@@ -24,6 +24,10 @@ async def ci(update: Update, context: CallbackContext):
 		return
 
 	job_name, job_args = context.args[0], context.args[1:]
+
+	if job_name == "--queue":
+		await update.message.reply_text(await format_queue_list())
+		return
 
 	try:
 		job_module = import_module(f"{JOB_MODULES_PREFIX}.{job_name}", package="Job")

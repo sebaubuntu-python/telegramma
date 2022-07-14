@@ -33,3 +33,8 @@ async def ci_task(bot: Bot):
 
 async def put_job(job: BaseJob):
     return await _queue.put(job)
+
+async def format_queue_list():
+    return "\n".join([
+        f"On queue: {_queue.qsize()}",
+    ])
