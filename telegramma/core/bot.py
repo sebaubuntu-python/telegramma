@@ -5,6 +5,7 @@
 #
 """telegramma bot."""
 
+from asyncio import Task, create_task, gather
 from os import execl, getpid, kill
 from signal import SIGTERM
 import sys
@@ -24,7 +25,10 @@ class ModuleInstance:
 
 class Bot:
 	def __init__(self, token: str) -> None:
+		self._stopping = False
 		self._should_restart = False
+
+		self.tasks: list[Task] = []
 
 		self.modules: dict[str, ModuleInstance] = {}
 		self.max_module_group = 0
@@ -41,8 +45,10 @@ class Bot:
 	async def _post_init(self, application: Application):
 		application.add_error_handler(error_handler)
 
-		for module_name in self.modules:
+		for module_name, module_instance in self.modules.items():
 			await self.toggle_module(module_name, True, False)
+			for task in module_instance.module.TASKS:
+				self.tasks.append(create_task(task(self)))
 
 		await self.update_my_commands()
 
@@ -52,8 +58,13 @@ class Bot:
 		if self._should_restart:
 			execl(sys.executable, sys.executable, *["-m", __bot_name__])
 
-	def stop(self, restart: bool = False) -> None:
+	async def stop(self, restart: bool = False) -> None:
+		self._stopping = True
 		self._should_restart = restart
+
+		# Wait for all tasks to finish
+		await gather(*self.tasks)
+
 		kill(getpid(), SIGTERM)
 
 	def get_module_instance(self, module_name: str):

@@ -89,7 +89,7 @@ async def restart(update: Update, context: CallbackContext):
 	)
 	await log_to_logging_chat(context.bot, text)
 
-	context.bot_data.stop(True)
+	await context.bot_data.stop(True)
 
 async def shutdown(update: Update, context: CallbackContext):
 	if not user_is_admin(update.message.from_user.id):
@@ -112,4 +112,4 @@ async def shutdown(update: Update, context: CallbackContext):
 	)
 	await log_to_logging_chat(context.bot, text)
 
-	context.bot_data.stop()
+	await context.bot_data.stop()
