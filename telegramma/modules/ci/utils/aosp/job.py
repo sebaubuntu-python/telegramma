@@ -4,10 +4,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from asyncio import TimeoutError, create_subprocess_exec, sleep, wait_for
+from asyncio.subprocess import PIPE, STDOUT
+from contextlib import suppress
 from datetime import datetime
 from pathlib import Path
 import re
-import subprocess
 
 from telegramma.api import get_config_namespace
 from telegramma.modules.ci.types.job import BaseJob
@@ -107,17 +109,15 @@ class AOSPJob(BaseJob):
 		]
 
 		last_edit = datetime.now()
-		process = subprocess.Popen(command, encoding="UTF-8",
-		                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		process = await create_subprocess_exec(*command, stdout=PIPE, stderr=STDOUT)
 		while True:
-			output = process.stdout.readline()
-			if output == '' and process.poll() is not None:
+			with suppress(TimeoutError):
+				await wait_for(process.wait(), 1e-6)
+			if process.returncode is not None:
 				break
-			if not output:
-				continue
 
-			now = datetime.now()
-			if (now - last_edit).seconds < 150:
+			output = (await process.stdout.readline()).decode("utf-8", errors="ignore")
+			if not output:
 				continue
 
 			result = re.search(r"\[ +([0-9]+% [0-9]+/[0-9]+)\]", output.strip())
@@ -127,15 +127,19 @@ class AOSPJob(BaseJob):
 			if len(result_split) != 2:
 				continue
 
+			# Make sure we wait at least 2 minutes before editing post
+			now = datetime.now()
+			delta_time = now - last_edit
+			if delta_time.seconds < 120:
+				continue
+
 			percentage, targets = re.split(" +", result.group(1))
 			await post_manager.update(f"Building: {percentage} ({targets})")
 
-			last_edit = now
-
-		returncode = process.poll()
+			last_edit = datetime.now()
 
 		# Process return code
-		build_result = AOSPReturnCode.from_code(returncode)
+		build_result = AOSPReturnCode.from_code(process.returncode)
 
 		if build_result.needs_logs_upload():
 			with (self.project_dir / build_result.log_file).open("rb") as log_file:
