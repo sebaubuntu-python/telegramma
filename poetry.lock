@@ -444,7 +444,7 @@ python-versions = ">= 3.5"
 
 [[package]]
 name = "twrpdtgen"
-version = "2.3.0"
+version = "2.3.1"
 description = "A Python library/script to automatically generate TWRP-compatible device tree from a boot/recovery image"
 category = "main"
 optional = false
@@ -809,8 +809,8 @@ tornado = [
     {file = "tornado-6.1.tar.gz", hash = "sha256:33c6e81d7bd55b468d2e793517c909b139960b6c790a60b7991b9b6b76fb9791"},
 ]
 twrpdtgen = [
-    {file = "twrpdtgen-2.3.0-py3-none-any.whl", hash = "sha256:298f53591ff24f4d30043efdb3524627d058e982d818d7a5b712ba24ef37fa42"},
-    {file = "twrpdtgen-2.3.0.tar.gz", hash = "sha256:9265eba3d19cfae8a66060fd7d5485d2a4800ccb2099c2078dcde069d7f968b9"},
+    {file = "twrpdtgen-2.3.1-py3-none-any.whl", hash = "sha256:1f789d1f3c9eb1c13c983741eef32582044d94c90e813b3bb3e11667ac932458"},
+    {file = "twrpdtgen-2.3.1.tar.gz", hash = "sha256:97464c4b7e54a2127cf9a901ef98cf494d877528c72b097e6e9db163bd92c467"},
 ]
 tzdata = [
     {file = "tzdata-2022.1-py2.py3-none-any.whl", hash = "sha256:238e70234214138ed7b4e8a0fab0e5e13872edab3be586ab8198c407620e2ab9"},
