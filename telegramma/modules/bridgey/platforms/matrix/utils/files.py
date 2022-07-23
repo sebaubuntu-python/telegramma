@@ -50,14 +50,18 @@ class MatrixFile:
 				"mimetype": self.mime_type,
 			},
 			"msgtype": msg_type,
-			"file": {
+		}
+
+		if self.decryption_keys:
+			content["file"] = {
 				"url": self.upload_response.content_uri,
 				"key": self.decryption_keys["key"],
 				"iv": self.decryption_keys["iv"],
 				"hashes": self.decryption_keys["hashes"],
 				"v": self.decryption_keys["v"],
-			},
-		}
+			}
+		else:
+			content["url"] = self.upload_response.content_uri
 
 		if msg_type == "m.image":
 			content["info"]["w"] = self.width
