@@ -86,6 +86,9 @@ class MatrixPlatform(BasePlatform):
 
 		await self.client.sync_forever(since=self.last_sync_token)
 
+	async def stop(self):
+		await self.client.close()
+
 	async def sync_callback(self, sync_response: SyncResponse) -> None:
 		if sync_response.next_batch == self.last_sync_token:
 			return

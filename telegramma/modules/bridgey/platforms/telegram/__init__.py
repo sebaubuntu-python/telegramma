@@ -36,6 +36,10 @@ class TelegramPlatform(BasePlatform):
 		# telegramma is our event loop
 		return None
 
+	async def stop(self) -> None:
+		# telegramma is our event loop
+		return None
+
 	@property
 	def running(self) -> bool:
 		return True

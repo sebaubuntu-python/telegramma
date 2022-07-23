@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from asyncio import Queue
+from asyncio import CancelledError, Queue
 from sebaubuntu_libs.libexception import format_exception
 from sebaubuntu_libs.liblogging import LOGI
 
@@ -70,18 +70,18 @@ class ToTelegramMessage:
 _queue: Queue[ToTelegramMessage] = Queue()
 
 async def to_telegram_task(bot: Bot):
-	while True:
-		if bot._stopping:
-			break
+	try:
+		while True:
+			message = await _queue.get()
 
-		message = await _queue.get()
+			try:
+				await message.send(bot)
+			except Exception as e:
+				LOGI(f"Failed to send message: {format_exception(e)}")
 
-		try:
-			await message.send(bot)
-		except Exception as e:
-			LOGI(f"Failed to send message: {format_exception(e)}")
-
-		_queue.task_done()
+			_queue.task_done()
+	except CancelledError:
+		pass
 
 async def put_message(message: ToTelegramMessage):
 	return await _queue.put(message)

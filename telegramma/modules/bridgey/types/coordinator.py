@@ -30,3 +30,12 @@ class Coordinator:
 
 		tasks = [asyncio.create_task(pool.start()) for pool in cls.pools.values()]
 		await asyncio.gather(*tasks)
+
+	@classmethod
+	async def stop(cls):
+		"""Stop the coordinator"""
+		if not cls.enabled:
+			return
+
+		tasks = [asyncio.create_task(pool.stop()) for pool in cls.pools.values()]
+		await asyncio.gather(*tasks)

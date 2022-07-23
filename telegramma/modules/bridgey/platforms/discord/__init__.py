@@ -77,6 +77,9 @@ class DiscordPlatform(BasePlatform):
 	async def start(self):
 		await self.client.start(self.token)
 
+	async def stop(self):
+		await self.client.close()
+
 	@property
 	def running(self) -> bool:
 		return self.channel is not None

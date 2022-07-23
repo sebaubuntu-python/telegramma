@@ -69,6 +69,10 @@ class Pool:
 		tasks = [asyncio.create_task(platform.start()) for platform in self.platforms.values()]
 		await asyncio.gather(*tasks)
 
+	async def stop(self):
+		tasks = [asyncio.create_task(platform.stop()) for platform in self.platforms.values()]
+		await asyncio.gather(*tasks)
+
 	def get_new_message_id(self) -> int:
 		"""Reserve a new generic message ID."""
 		with self.last_message_id_lock:

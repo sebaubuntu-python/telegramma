@@ -81,6 +81,10 @@ class BasePlatform:
 		"""Start the platform."""
 		raise NotImplementedError
 
+	async def stop(self) -> None:
+		"""Stop the platform."""
+		raise NotImplementedError
+
 	@property
 	def running(self) -> bool:
 		"""The platform observer is running."""
