@@ -25,7 +25,6 @@ class ModuleInstance:
 
 class Bot:
 	def __init__(self, token: str) -> None:
-		self._stopping = False
 		self._should_restart = False
 
 		self.tasks: list[Task] = []
@@ -59,11 +58,12 @@ class Bot:
 			execl(sys.executable, sys.executable, *["-m", __bot_name__])
 
 	async def stop(self, restart: bool = False) -> None:
-		self._stopping = True
 		self._should_restart = restart
 
+		# Stop all tasks
+		(task.cancel() for task in self.tasks)
 		# Wait for all tasks to finish
-		await gather(*self.tasks)
+		await gather(*self.tasks, return_exceptions=True)
 
 		kill(getpid(), SIGTERM)
 
