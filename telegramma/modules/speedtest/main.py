@@ -42,7 +42,8 @@ async def speedtest(update: Update, context: CallbackContext):
 		speedtest.upload()
 	except Exception as e:
 		await message.edit_text("Error: Failed to run speedtest")
-		log_to_logging_chat(
+		await log_to_logging_chat(
+			context.bot,
 			f"Error: failed to run speedtest:\n"
 			f"{format_exception(e)}"
 		)
