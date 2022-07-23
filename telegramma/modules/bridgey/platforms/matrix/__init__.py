@@ -190,7 +190,6 @@ class MatrixPlatform(BasePlatform):
 			response = await matrix_file.send(
 				self.client,
 				self.room_id,
-				body=text,
 			)
 		else:
 			content = {

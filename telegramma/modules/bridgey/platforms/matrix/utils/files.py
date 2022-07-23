@@ -31,8 +31,7 @@ class MatrixFile:
 		self.width = width
 		self.height = height
 
-	async def send(self, client: AsyncClient, room_id: str,
-	               body: str = "", force_file: bool = False):
+	async def send(self, client: AsyncClient, room_id: str, force_file: bool = False):
 		"""Wrapper for sending a file to a room."""
 		if self.mime_type.startswith("image/") and not force_file:
 			msg_type = "m.image"
@@ -44,7 +43,7 @@ class MatrixFile:
 			msg_type = "m.file"
 
 		content = {
-			"body": body or self.filename,
+			"body": self.filename,
 			"info": {
 				"size": self.filesize,
 				"mimetype": self.mime_type,
