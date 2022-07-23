@@ -27,7 +27,7 @@ async def ci_task(bot: Bot):
                 "Error: Unhandled exception in job",
                 f"{format_exception(e)}"
             ])
-            log_to_logging_chat(bot, text)
+            await log_to_logging_chat(bot.application.bot, text)
 
         _queue.task_done()
 
