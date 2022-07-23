@@ -10,6 +10,8 @@ from sebaubuntu_libs.liblogging import LOGE
 from telegram import Update
 from telegram.ext import CallbackContext
 
+from telegramma.api import log_to_logging_chat
+
 async def error_handler(update: Update, context: CallbackContext):
 	formatted_error = "Error encountered!\n"
 	if update:
@@ -39,5 +41,10 @@ async def error_handler(update: Update, context: CallbackContext):
 	formatted_error += f"\n{format_exception(context.error)}"
 
 	LOGE(formatted_error)
+
+	try:
+		await log_to_logging_chat(context.bot, formatted_error)
+	except Exception as e:
+		LOGE(f"Failed to send message to logging chat: {e}")
 
 	LOGE("End error handling")
