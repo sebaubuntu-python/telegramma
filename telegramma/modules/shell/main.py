@@ -9,7 +9,6 @@ from telegram import Update
 from telegram.constants import MessageLimit, ParseMode
 from telegram.ext import CallbackContext
 from telegram.helpers import escape_markdown
-from tempfile import TemporaryFile
 
 from telegramma.api import user_is_admin
 
@@ -54,9 +53,5 @@ async def shell(update: Update, context: CallbackContext):
 		await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
 	else:
 		text += text_document
-		fd = TemporaryFile(mode='r+')
-		fd.write(output)
-		fd.seek(0)
-		await update.message.reply_document(document=fd, filename="output.txt", caption=text,
-		                              parse_mode=ParseMode.MARKDOWN_V2)
-		fd.close()
+		await update.message.reply_document(document=output.encode("utf-8"), filename="output.txt", caption=text,
+		                                    parse_mode=ParseMode.MARKDOWN_V2)
