@@ -88,8 +88,9 @@ async def upload_file_to_matrix(client: AsyncClient, file: str):
 	mime_type: str = magic.from_buffer(file_bytes, mime=True)
 
 	if mime_type.startswith("image/"):
-		with Image.open(file_bytes) as i:
-			width, height = i.size
+		with BytesIO(file_bytes) as f:
+			with Image.open(f) as i:
+				width, height = i.size
 	else:
 		width, height = None, None
 
