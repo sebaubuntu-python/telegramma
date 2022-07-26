@@ -27,10 +27,10 @@ class TelegramPlatform(BasePlatform):
 	MESSAGE_TYPE = TelegramMessage
 	USER_TYPE = TelegramUser
 
-	def __init__(self, pool, instance_name: str, data: dict):
-		super().__init__(pool, instance_name, data)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
 
-		self.chat_id: int = data["chat_id"]
+		self.chat_id: int = self.data["chat_id"]
 
 	async def start(self) -> None:
 		# telegramma is our event loop

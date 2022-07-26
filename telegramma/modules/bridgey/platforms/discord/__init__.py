@@ -62,12 +62,12 @@ class DiscordPlatform(BasePlatform):
 	MESSAGE_TYPE = DiscordMessage
 	USER_TYPE = DiscordUser
 
-	def __init__(self, pool, instance_name: str, data: dict):
+	def __init__(self, *args, **kwargs):
 		"""Initialize the platform."""
-		super().__init__(pool, instance_name, data)
+		super().__init__(*args, **kwargs)
 
-		self.channel_id: int = data["channel_id"]
-		self.token: str = data["token"]
+		self.channel_id: int = self.data["channel_id"]
+		self.token: str = self.data["token"]
 
 		self.client = None
 		self.channel: TextChannel = None

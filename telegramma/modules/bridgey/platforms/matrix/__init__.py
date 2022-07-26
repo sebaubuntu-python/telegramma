@@ -38,13 +38,13 @@ class MatrixPlatform(BasePlatform):
 	MESSAGE_TYPE = RoomMessage
 	USER_TYPE = str
 
-	def __init__(self, pool, instance_name: str, data: dict):
-		super().__init__(pool, instance_name, data)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
 
-		self.username: str = data["username"]
-		self.password: str = data["password"]
-		self.homeserver_url: str = data["homeserver_url"]
-		self.room_alias: str = data["room_alias"]
+		self.username: str = self.data["username"]
+		self.password: str = self.data["password"]
+		self.homeserver_url: str = self.data["homeserver_url"]
+		self.room_alias: str = self.data["room_alias"]
 
 		if not self.homeserver_url.startswith("https://") and not self.homeserver_url.startswith("http://"):
 			self.homeserver_url = f"https://{self.homeserver_url}"
