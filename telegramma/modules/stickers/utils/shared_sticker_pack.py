@@ -60,9 +60,11 @@ class SharedStickerPack:
 			name=sticker_set_name,
 			title=title,
 			emojis=first_sticker.emoji,
-			png_sticker=first_sticker.file_id,
+			png_sticker=first_sticker.file_id if not first_sticker.is_animated and not first_sticker.is_video else None,
 			contains_masks=first_sticker.mask_position is not None,
-			mask_position=first_sticker.mask_position
+			mask_position=first_sticker.mask_position,
+			tgs_sticker=first_sticker.file_id if first_sticker.is_animated else None,
+			webm_sticker=first_sticker.file_id if first_sticker.is_video else None,
 		)
 		assert result, "Failed to create new sticker set"
 

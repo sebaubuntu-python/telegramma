@@ -83,8 +83,10 @@ async def addsticker(update: Update, context: CallbackContext, args: List[str]):
 		result = await context.bot.add_sticker_to_set(
 			user_id=update.message.from_user.id,
 			name=shared_sticker_pack.name,
+			png_sticker=sticker.file_id if not sticker.is_animated and not sticker.is_video else None,
+			tgs_sticker=sticker.file_id if sticker.is_animated else None,
+			webm_sticker=sticker.file_id if sticker.is_video else None,
 			emojis=sticker.emoji,
-			png_sticker=sticker.file_id
 		)
 	except TelegramError as e:
 		await update.message.reply_text(f"Error while adding sticker to sticker set: {e.message}")
