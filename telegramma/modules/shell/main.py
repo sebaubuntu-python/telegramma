@@ -4,7 +4,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-import subprocess
+from asyncio import create_subprocess_shell
+from asyncio.subprocess import PIPE, STDOUT
 from telegram import Update
 from telegram.constants import MessageLimit, ParseMode
 from telegram.ext import CallbackContext
@@ -17,34 +18,31 @@ async def shell(update: Update, context: CallbackContext):
 		await update.message.reply_text("Error: You are not authorized to use the shell")
 		return
 
-	if len(update.message.text.split(' ', 1)) < 2:
-		await update.message.reply_text("No command provided")
+	if not context.args:
+		await update.message.reply_text("Error: No command specified")
 		return
 
 	command = update.message.text.split(' ', 1)[1]
-	try:
-		process = subprocess.check_output(command, shell=True, executable="/bin/bash",
-		                                  stderr=subprocess.STDOUT, universal_newlines=True,
-		                                  encoding="utf-8")
-	except subprocess.CalledProcessError as e:
-		returncode = e.returncode
-		output = e.output
-	else:
-		returncode = 0
-		output = process
 
-	text = (
-		f"Command: `{escape_markdown(command, 2)}`\n"
-		f"Return code: {returncode}\n"
-		"\n"
-	)
+	process = await create_subprocess_shell(command, executable="/bin/bash",
+	                                        stdout=PIPE, stderr=STDOUT)
+	returncode = await process.wait()
+	output = await process.stdout.read()
+	output_str = output.decode("utf-8", errors="ignore")
 
-	text_message = (
-		"Output:\n"
-		"```\n"
-		f"{escape_markdown(output, 2)}\n"
-		"```"
-	)
+	text = "\n".join([
+		f"Command: `{escape_markdown(command, 2)}`",
+		f"Return code: {returncode}",
+		"",
+		"",
+	])
+
+	text_message = "\n".join([
+		"Output:",
+		"```",
+		f"{escape_markdown(output_str, 2)}",
+		"```",
+	])
 
 	text_document = "Output: sent as document"
 
@@ -53,5 +51,5 @@ async def shell(update: Update, context: CallbackContext):
 		await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
 	else:
 		text += text_document
-		await update.message.reply_document(document=output.encode("utf-8"), filename="output.txt", caption=text,
+		await update.message.reply_document(document=output, filename="output.txt", caption=text,
 		                                    parse_mode=ParseMode.MARKDOWN_V2)
