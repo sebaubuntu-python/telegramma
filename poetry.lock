@@ -477,7 +477,7 @@ tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "pa
 
 [[package]]
 name = "py-cord"
-version = "2.0.0"
+version = "2.0.1"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -533,10 +533,10 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
-docs = ["zope.interface", "sphinx-rtd-theme", "sphinx"]
-dev = ["pre-commit", "mypy", "coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)", "cryptography (>=3.3.1)", "zope.interface", "sphinx-rtd-theme", "sphinx"]
 crypto = ["cryptography (>=3.3.1)"]
+dev = ["sphinx", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.3.1)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "mypy", "pre-commit"]
+docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
+tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
 
 [[package]]
 name = "pynacl"
@@ -1307,8 +1307,8 @@ pillow = [
     {file = "Pillow-9.2.0.tar.gz", hash = "sha256:75e636fd3e0fb872693f23ccb8a5ff2cd578801251f3a4f6854c6a5d437d3c04"},
 ]
 py-cord = [
-    {file = "py-cord-2.0.0.tar.gz", hash = "sha256:045bf5409a657f5125cb6d66e82715e188b179af1851de37ccc0685837646336"},
-    {file = "py_cord-2.0.0-py3-none-any.whl", hash = "sha256:8f91af822b9cb65adb72f0bf67c77fe9c98db54bf5342d52c5bb0ee1d95ee625"},
+    {file = "py-cord-2.0.1.tar.gz", hash = "sha256:43149040431c0bc13dfc12685d5e636c15f1b9ecba2d162ecb6b22d66b3e5684"},
+    {file = "py_cord-2.0.1-py3-none-any.whl", hash = "sha256:2ee7b5ceb86fdee34dc7b104d9e6628f132ecf194f78810328381b68c5e09c18"},
 ]
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
