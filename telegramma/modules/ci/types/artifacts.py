@@ -8,6 +8,7 @@ from enum import Enum
 from pathlib import Path
 from sebaubuntu_libs.libexception import format_exception
 from sebaubuntu_libs.liblogging import LOGE
+from typing import List
 
 from telegramma.modules.ci.types.post_manager import PostManager
 from telegramma.modules.ci.types.uploader import BaseUploader
@@ -22,7 +23,7 @@ class ArtifactStatus(Enum):
 		return self.value
 
 class Artifacts(dict):
-	def __init__(self, path: Path, patterns: list[str]):
+	def __init__(self, path: Path, patterns: List[str]):
 		"""Find the artifacts."""
 		super().__init__()
 

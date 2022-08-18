@@ -11,7 +11,7 @@ from telegramma.api import log_to_logging_chat
 from telegramma.core.bot import Bot
 from telegramma.modules.ci.types.job import BaseJob
 
-_queue: Queue[BaseJob] = Queue()
+_queue: "Queue[BaseJob]" = Queue()
 
 async def ci_task(bot: Bot):
 	try:

@@ -19,13 +19,13 @@ CONFIG_NAMESPACE = get_config_namespace("ci")
 
 UPLOAD_PROFILES: Dict[str, Dict] = CONFIG_NAMESPACE.get("upload_profiles", {})
 
-METHODS: dict[str, BaseUploader] = {
+METHODS: Dict[str, BaseUploader] = {
 	"localcopy": UploaderLocalcopy,
 	"ftp": UploaderFTP,
 	"sftp": UploaderSFTP,
 }
 
-uploaders: dict[str, BaseUploader] = {
+uploaders: Dict[str, BaseUploader] = {
 	profile_name: METHODS.get(profile.get("method"), BaseUploader)(profile)
 	for profile_name, profile in UPLOAD_PROFILES.items()
 }

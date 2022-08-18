@@ -67,7 +67,7 @@ class ToTelegramMessage:
 
 		self.platform.set_platform_message_id(self.message_id, telegram_message.message_id)
 
-_queue: Queue[ToTelegramMessage] = Queue()
+_queue: "Queue[ToTelegramMessage]" = Queue()
 
 async def to_telegram_task(bot: Bot):
 	try:

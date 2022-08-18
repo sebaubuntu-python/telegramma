@@ -7,6 +7,7 @@
 
 import json
 from pathlib import Path
+from sebaubuntu_libs.libstring import removesuffix
 from threading import Lock
 
 class _DatabaseFile:
@@ -120,7 +121,7 @@ class Database:
 			for subkey in k.split('.')[::-1]:
 				d = {subkey: d}
 				current_subkey = f".{subkey}" if not current_subkey else f".{subkey}{current_subkey}"
-				subkey_full = k.removesuffix(current_subkey)
+				subkey_full = removesuffix(k, current_subkey)
 				if cls.__has(subkey_full) and isinstance(cls.__get(subkey_full), dict):
 					cls.__get(subkey_full).update(d)
 					d = cls.__get(subkey_full)

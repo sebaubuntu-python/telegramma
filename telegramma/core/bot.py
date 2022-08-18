@@ -10,6 +10,7 @@ from os import execl, getpid, kill
 from signal import SIGTERM
 import sys
 from telegram.ext import Application, ContextTypes
+from typing import Dict, List
 
 from telegramma import __name__ as __bot_name__
 from telegramma.api import Module
@@ -27,9 +28,9 @@ class Bot:
 	def __init__(self, token: str) -> None:
 		self._should_restart = False
 
-		self.tasks: list[Task] = []
+		self.tasks: List[Task] = []
 
-		self.modules: dict[str, ModuleInstance] = {}
+		self.modules: Dict[str, ModuleInstance] = {}
 		self.max_module_group = 0
 		for module in get_all_modules():
 			self.modules[module.NAME] = ModuleInstance(module, self.max_module_group)

@@ -5,6 +5,8 @@
 
 Modular Telegram bot
 
+Requires Python 3.8 or greater
+
 ## Installation
 
 -   Clone the repo
@@ -13,11 +15,13 @@ Modular Telegram bot
 -   Put a bot token in `config.py`
 -   Edit additional variables in `config.py`
 
-## How to use
+## Instructions
 
 ```sh
 python3 -m telegramma
 ```
+
+## License
 
 ```
 #

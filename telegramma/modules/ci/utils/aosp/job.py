@@ -10,6 +10,7 @@ from contextlib import suppress
 from datetime import datetime
 from pathlib import Path
 import re
+from sebaubuntu_libs.libstring import removesuffix
 
 from telegramma.api import get_config_namespace
 from telegramma.modules.ci.types.job import BaseJob
@@ -164,7 +165,7 @@ class AOSPJob(BaseJob):
 			return
 
 		zip_filename = zip_filename[0].name
-		folder_name = zip_filename.removesuffix(".zip")
+		folder_name = removesuffix(zip_filename, ".zip")
 		if self.date_regex:
 			date_match = re.search(self.date_regex, zip_filename)
 			if date_match:

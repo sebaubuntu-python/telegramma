@@ -7,7 +7,7 @@
 
 from telegram import BotCommand
 from telegram.ext import BaseHandler
-from typing import TYPE_CHECKING, Any, Callable, Coroutine
+from typing import TYPE_CHECKING, Any, Callable, Coroutine, List
 
 if TYPE_CHECKING:
 	from telegramma.core.bot import Bot
@@ -22,11 +22,11 @@ class Module:
 	"""Module version."""
 	CORE: bool = False
 	"""The module provides core functionality."""
-	HANDLERS: list[BaseHandler] = []
+	HANDLERS: List[BaseHandler] = []
 	"""List of handlers."""
-	COMMANDS: list[BotCommand] = []
+	COMMANDS: List[BotCommand] = []
 	"""List of commands which the bot provides."""
-	TASKS: list[Callable[[Bot], Coroutine[Any, Any, None]]] = []
+	TASKS: List[Callable[[Bot], Coroutine[Any, Any, None]]] = []
 	"""List of tasks to be executed after the bot is started. They must run forever and be non-blocking."""
 
 	def __init__(self):

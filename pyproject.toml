@@ -8,8 +8,8 @@ readme = "README.md"
 repository = "https://github.com/SebaUbuntu/telegramma"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-python-telegram-bot = "20.0a2"
+python = "^3.8"
+python-telegram-bot = "^20.0a2"
 sebaubuntu-libs = "^1.1.1"
 twrpdtgen = "^2.4.0"
 deepl = "^1.8.0"

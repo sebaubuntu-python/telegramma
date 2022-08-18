@@ -6,11 +6,12 @@
 """telegramma admin utils."""
 
 from sebaubuntu_libs.liblogging import LOGI
+from typing import List
 
 from telegramma.api._config import get_config_namespace
 
 CONFIG_NAMESPACE = get_config_namespace("bot")
-ADMINS: list[int] = CONFIG_NAMESPACE.get("admins", [])
+ADMINS: List[int] = CONFIG_NAMESPACE.get("admins", [])
 
 def user_is_admin(user_id: int):
 	"""Check if the given user ID is in the list of the admin user IDs."""

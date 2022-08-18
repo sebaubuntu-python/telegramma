@@ -48,7 +48,7 @@ class Pool:
 
 		self.pool_config = CONFIG_NAMESPACE.get("pools", {}).get(self.name, {})
 
-		self.platforms: dict[str, BasePlatform] = {}
+		self.platforms: Dict[str, BasePlatform] = {}
 
 		for platform_name, platform_data in self.pool_config.items():
 			if not "platform" in platform_data:
