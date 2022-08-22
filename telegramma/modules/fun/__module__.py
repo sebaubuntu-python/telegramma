@@ -15,6 +15,7 @@ from telegramma.modules.fun.main import (
 	roll,
 	slap,
 	whatis,
+	xda,
 )
 
 class FunModule(Module):
@@ -24,11 +25,13 @@ class FunModule(Module):
 		CommandHandler(["roll"], roll),
 		CommandHandler(["slap"], slap),
 		CommandHandler(["whatis"], whatis),
+		CommandHandler(["xda"], xda),
 	]
 	COMMANDS = [
 		BotCommand("roll", "Roll a magic ball"),
 		BotCommand("slap", "Slap someone"),
 		BotCommand("whatis", "Check the definition of something"),
+		BotCommand("xda", "Let a general XDA user speak"),
 	]
 
 module = FunModule()

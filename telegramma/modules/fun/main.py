@@ -4,10 +4,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from random import choices
+from random import choices, randint, shuffle
 from requests import HTTPError, get
 from telegram import Update
 from telegram.ext import CallbackContext
+
+from telegramma.modules.fun.xda_words import WORDS
 
 DOMAIN = "https://some-random-api.ml"
 
@@ -72,3 +74,9 @@ async def whatis(update: Update, context: CallbackContext):
 		return
 
 	await update.message.reply_text(f"{text} is {random_item}")
+
+async def xda(update: Update, context: CallbackContext):
+	length = randint(3, 10)
+	string = choices(list(WORDS.keys()), weights=list(WORDS.values()), k=length)
+	shuffle(string)
+	await update.message.reply_text(" ".join(string))
