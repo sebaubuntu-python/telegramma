@@ -5,7 +5,6 @@
 #
 
 from io import BytesIO
-from requests import HTTPError
 from sebaubuntu_libs.libnekobin import to_nekobin
 from telegram import Update
 from telegram.ext import CallbackContext
@@ -36,9 +35,7 @@ async def nekobin(update: Update, context: CallbackContext):
 
 	try:
 		url = to_nekobin(text)
-	except HTTPError as e:
-		await message.edit_text(f"Error: failed to upload to Nekobin: {e.response.status_code}")
 	except Exception:
-		await message.edit_text("Error: failed to upload to Nekobin: unknown error")
+		await message.edit_text("Error: failed to upload to Nekobin")
 	else:
 		await message.edit_text(f"Done, uploaded to Nekobin: {url}", disable_web_page_preview=True)
