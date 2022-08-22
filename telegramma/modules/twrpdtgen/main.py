@@ -4,12 +4,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from aiohttp import ClientSession
 from datetime import date
 from git import Repo
 from git.exc import GitCommandError
 from github import Github, GithubException
 from pathlib import Path
-import requests
 from sebaubuntu_libs.libexception import format_exception
 from sebaubuntu_libs.liblogging import LOGE
 from telegram import Update
@@ -57,13 +57,15 @@ async def twrpdtgen(update: Update, context: CallbackContext):
 	path = Path(tempdir.name)
 	file = path / "recovery.img"
 
-	try:
-		file.write_bytes(requests.get(url, allow_redirects=True).content)
-	except Exception as e:
-		await update_message("Error: Failed to download file")
-		LOGE("Failed to download file:\n"
-		     f"{format_exception(e)}")
-		return
+	async with ClientSession() as session:
+		try:
+			async with session.get(url, allow_redirects=True, raise_for_status=True) as response:
+				file.write_bytes(await response.read())
+		except Exception as e:
+			await update_message("Error: Failed to download file")
+			LOGE("Failed to download file:\n"
+				f"{format_exception(e)}")
+			return
 
 	# Generate device tree
 	await update_message("Generating device tree...")
