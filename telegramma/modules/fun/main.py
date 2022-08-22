@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from aiohttp import ClientSession
 from random import choices, randint, shuffle
-from requests import HTTPError, get
 from telegram import Update
 from telegram.ext import CallbackContext
 
@@ -13,14 +13,13 @@ from telegramma.modules.fun.xda_words import WORDS
 
 DOMAIN = "https://some-random-api.ml"
 
-def get_random_item():
-	response = get("https://itvends.com/vend.php?format=text")
-	try:
-		response.raise_for_status()
-	except HTTPError:
-		return None
-
-	return response.text.strip()
+async def get_random_item():
+	async with ClientSession() as session:
+		try:
+			async with session.get("https://itvends.com/vend.php?format=text", raise_for_status=True) as response:
+				return (await response.text()).strip()
+		except Exception:
+			return None
 
 async def roll(update: Update, context: CallbackContext):
 	chances = {
@@ -53,7 +52,7 @@ async def slap(update: Update, context: CallbackContext):
 
 	text = f"*{username} slaps {slapped_username}"
 
-	random_item = get_random_item()
+	random_item = await get_random_item()
 	if random_item:
 		text += f" with {random_item}"
 
@@ -68,7 +67,7 @@ async def whatis(update: Update, context: CallbackContext):
 
 	text = " ".join(context.args)
 
-	random_item = get_random_item()
+	random_item = await get_random_item()
 	if not random_item:
 		await update.message.reply_text(f"Error: Couldn't understand what's that")
 		return
