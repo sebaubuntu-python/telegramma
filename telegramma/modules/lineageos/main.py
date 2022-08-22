@@ -7,7 +7,6 @@
 from calendar import day_name
 from humanize import naturalsize
 from random import Random
-from requests import HTTPError
 from sebaubuntu_libs.liblineage.ota import get_nightlies
 from sebaubuntu_libs.liblineage.wiki import get_device_data
 from telegram import Update
@@ -23,7 +22,7 @@ async def info(update: Update, context: CallbackContext):
 	device = context.args[1]
 	try:
 		device_data = get_device_data(device)
-	except HTTPError:
+	except Exception:
 		await update.message.reply_text("Error: Device not found")
 		return
 
@@ -57,7 +56,7 @@ async def when(update: Update, context: CallbackContext):
 
 	try:
 		device_data = get_device_data(device)
-	except HTTPError:
+	except Exception:
 		await update.message.reply_text("Error: Device not found")
 		return
 
