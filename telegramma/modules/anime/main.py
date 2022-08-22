@@ -15,7 +15,7 @@ from telegramma.modules.anime.some_random_api import SomeRandomAPIAnime
 # some-random-api.ml
 
 async def hug(update: Update, context: CallbackContext):
-	url = SomeRandomAPIAnime.get_hug()
+	url = await SomeRandomAPIAnime.get_hug()
 	if not url:
 		await update.message.reply_text(f"Error: Failed to give you a hug :(")
 		return
@@ -26,7 +26,7 @@ async def hug(update: Update, context: CallbackContext):
 		await update.message.reply_animation(url)
 
 async def pat(update: Update, context: CallbackContext):
-	url = SomeRandomAPIAnime.get_pat()
+	url = await SomeRandomAPIAnime.get_pat()
 	if not url:
 		await update.message.reply_text(f"Error: Failed to give you a pat :(")
 		return
@@ -37,7 +37,7 @@ async def pat(update: Update, context: CallbackContext):
 		await update.message.reply_animation(url)
 
 async def wink(update: Update, context: CallbackContext):
-	url = SomeRandomAPIAnime.get_wink()
+	url = await SomeRandomAPIAnime.get_wink()
 	if not url:
 		await update.message.reply_text(f"Error: Failed to give you a wink :(")
 		return
@@ -65,7 +65,7 @@ async def anigirl_holding_programming_book(update: Update, context: CallbackCont
 		return
 
 	if args.languages:
-		languages = SenpyClubAPI.get_languages()
+		languages = await SenpyClubAPI.get_languages()
 		if not languages:
 			await update.message.reply_text(f"Error: Failed to get a list of supported languages")
 			return
@@ -80,14 +80,14 @@ async def anigirl_holding_programming_book(update: Update, context: CallbackCont
 
 	language = None
 	if args.language:
-		language = SenpyClubAPI.is_language_supported(args.language)
+		language = await SenpyClubAPI.is_language_supported(args.language)
 		if not language:
 			await update.message.reply_text(f"Error: {args.language} is not a supported language")
 			return
 
 	if language:
 		try:
-			images = SenpyClubAPI.get_images_of_language(language)
+			images = await SenpyClubAPI.get_images_of_language(language)
 		except Exception:
 			await update.message.reply_text(f"Error: Failed to get an image")
 			return
@@ -98,7 +98,7 @@ async def anigirl_holding_programming_book(update: Update, context: CallbackCont
 
 		image = choice(images)
 	else:
-		image = SenpyClubAPI.get_random_image()
+		image = await SenpyClubAPI.get_random_image()
 
 	description = "\n".join([
 		f"{image.get_description()}",

@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from requests import get
-from typing import Generator, List, Union
+from aiohttp import ClientSession
+from typing import List, Union
 from urllib.request import pathname2url
 
 class Image:
@@ -31,41 +31,32 @@ class SenpyClubAPI:
 	API_ENDPOINT = "https://api.senpy.club/v2"
 
 	@classmethod
-	def _get_senpy_club_api_result(cls, path: str):
+	async def _get_senpy_club_api_result(cls, path: str):
 		# Make sure the API is alive
 		assert cls.status()
 
 		url = f"{cls.API_ENDPOINT}/{path}"
-		response = get(url)
-		try:
-			response.raise_for_status()
-		except Exception:
-			return None
-
-		try:
-			response_json = response.json()
-		except Exception:
-			return None
-
-		return response_json
+		async with ClientSession() as session:
+			try:
+				async with session.get(url, raise_for_status=True) as response:
+					return await response.json()
+			except Exception:
+				return None
 
 	@classmethod
-	def status(cls) -> bool:
+	async def status(cls) -> bool:
 		"""Check the API status."""
-		try:
-			response = get(cls.API_ENDPOINT)
-		except Exception:
-			return False
-
-		return response.status_code == 200
+		async with ClientSession() as session:
+			async with session.get(cls.API_ENDPOINT) as response:
+				return response.status == 200
 
 	@classmethod
-	def get_languages(cls) -> List[str]:
+	async def get_languages(cls) -> List[str]:
 		"""Returns a list of programming languages supported by the API."""
-		return cls._get_senpy_club_api_result("languages") or []
+		return await cls._get_senpy_club_api_result("languages") or []
 
 	@classmethod
-	def is_language_supported(cls, language: str, languages: List[str] = None) -> Union[str, None]:
+	async def is_language_supported(cls, language: str, languages: List[str] = None) -> Union[str, None]:
 		"""
 		Check if the provided language is supported by the API.
 
@@ -73,7 +64,7 @@ class SenpyClubAPI:
 		To avoid useless API calls, you can pass a list of supported languages.
 		"""
 		if languages is None:
-			languages = cls.get_languages()
+			languages = await cls.get_languages()
 
 		language_casefolded = language.casefold()
 		for l in languages:
@@ -83,7 +74,7 @@ class SenpyClubAPI:
 		return None
 
 	@classmethod
-	def get_images_of_language(cls, language: str) -> List[Image]:
+	async def get_images_of_language(cls, language: str) -> List[Image]:
 		"""
 		Returns a list of images of the given programming language.
 
@@ -95,14 +86,14 @@ class SenpyClubAPI:
 		# Handle cases like C#
 		language_url = pathname2url(language)
 
-		for image in cls._get_senpy_club_api_result(f"language/{language_url}") or []:
+		for image in await cls._get_senpy_club_api_result(f"language/{language_url}") or []:
 			images.append(Image(language, image))
 
 		return images
 
 	@classmethod
-	def get_random_image(cls) -> Image:
+	async def get_random_image(cls) -> Image:
 		"""Returns a random image of any programming language from the API."""
-		result = cls._get_senpy_club_api_result("random")
+		result = await cls._get_senpy_club_api_result("random")
 		assert result is not None
 		return Image(**result)
