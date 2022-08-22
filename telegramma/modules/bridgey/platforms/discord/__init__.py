@@ -5,6 +5,7 @@
 #
 
 from __future__ import annotations
+from aiohttp import ClientSession
 from discord import (
 	Attachment,
 	Bot,
@@ -16,7 +17,6 @@ from discord import (
 	User as DiscordUser,
 )
 from io import BytesIO
-import requests
 from sebaubuntu_libs.liblogging import LOGE
 
 from telegramma.modules.bridgey.types.platform import BasePlatform
@@ -154,13 +154,14 @@ class DiscordPlatform(BasePlatform):
 			#elif message.message_type is MessageType.STICKER:
 			#	embed.set_thumbnail(url=message.file.url)
 			#else:
-				try:
-					response = requests.get(message.file.url)
-				except Exception as e:
-					LOGE(f"Failed to download file: {e}")
-					return
-
-				file = DiscordFile(BytesIO(response.content), filename=message.file.name)
+				async with ClientSession() as session:
+					try:
+						async with session.get(message.file.url, raise_for_status=True) as response:
+							file = DiscordFile(BytesIO(await response.read()),
+							                   filename=message.file.name)
+					except Exception as e:
+						LOGE(f"Failed to download file: {e}")
+						return
 
 		reference = None
 		if message.reply_to:

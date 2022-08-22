@@ -4,13 +4,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from aiohttp import ClientSession
 from typing import Any, Dict
 from PIL import Image
 from io import BytesIO
 import magic
 from nio import AsyncClient, UploadResponse
 from os.path import basename
-import requests
 from urllib.parse import urlparse
 
 class MatrixFile:
@@ -80,9 +80,9 @@ async def upload_file_to_matrix(client: AsyncClient, file: str):
 	filename = basename(url.path)
 
 	# Download the file, not gonna be happy with big files
-	response = requests.get(file)
-	response.raise_for_status()
-	file_bytes = response.content
+	async with ClientSession() as session:
+		async with session.get(file, raise_for_status=True) as response:
+			file_bytes = await response.read()
 
 	mime_type: str = magic.from_buffer(file_bytes, mime=True)
 

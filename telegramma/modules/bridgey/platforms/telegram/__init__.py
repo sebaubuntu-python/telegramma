@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-import requests
+from aiohttp import ClientSession
 from sebaubuntu_libs.liblogging import LOGE
 from telegram import (
 	File as TelegramFile,
@@ -116,13 +116,13 @@ class TelegramPlatform(BasePlatform):
 
 		content = None
 		if message.file:
-			try:
-				response = requests.get(message.file.url)
-			except Exception as e:
-				LOGE(f"Failed to download file: {e}")
-				return
-
-			content = response.content
+			async with ClientSession() as session:
+				try:
+					async with session.get(message.file.url) as response:
+						content = await response.read()
+				except Exception as e:
+					LOGE(f"Failed to download file: {e}")
+					return
 
 		reply_to_message_id = None
 		if message.reply_to:
