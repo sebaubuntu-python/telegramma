@@ -6,9 +6,9 @@
 
 from asyncio import CancelledError, Event, sleep
 from datetime import datetime
+from liblineage.hudson.build_target import BuildTarget
+from liblineage.ota.full_update_info import FullUpdateInfo
 from sebaubuntu_libs.libexception import format_exception
-from sebaubuntu_libs.liblineage.hudson import get_lineage_build_targets
-from sebaubuntu_libs.liblineage.ota import get_nightlies
 from sebaubuntu_libs.liblogging import LOGE, LOGI
 from typing import Dict
 
@@ -24,8 +24,8 @@ class Observer:
 	event = Event()
 
 	now = datetime.now()
-	for device in [build_target.device for build_target in get_lineage_build_targets()]:
-		last_device_post[device] = now
+	for build_target in BuildTarget.get_lineage_build_targets():
+		last_device_post[build_target.device] = now
 
 	if CONFIG_NAMESPACE.get("enable", False):
 		event.set()
@@ -38,14 +38,14 @@ class Observer:
 				await cls.event.wait()
 
 				try:
-					build_targets = get_lineage_build_targets()
+					build_targets = BuildTarget.get_lineage_build_targets()
 				except Exception as e:
 					LOGE(f"Can't get build targets: {format_exception(e)}")
 					continue
 
 				for device in [build_target.device for build_target in build_targets]:
 					try:
-						response = get_nightlies(device)
+						response = FullUpdateInfo.get_nightlies(device)
 					except Exception:
 						response = []
 
@@ -74,5 +74,5 @@ class Observer:
 
 	@classmethod
 	def set_start_date(cls, date: datetime):
-		for device in [build_target.device for build_target in get_lineage_build_targets()]:
-			cls.last_device_post[device] = date
+		for build_target in BuildTarget.get_lineage_build_targets():
+			cls.last_device_post[build_target.device] = date

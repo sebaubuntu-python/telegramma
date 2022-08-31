@@ -5,7 +5,7 @@
 #
 
 from datetime import datetime
-from sebaubuntu_libs.liblineage.ota import get_nightlies
+from liblineage.ota.full_update_info import FullUpdateInfo
 from telegram import Update
 from telegram.ext import CallbackContext
 
@@ -71,7 +71,7 @@ async def test_post(update: Update, context: CallbackContext):
 	chat_id = update.message.chat_id
 
 	try:
-		response = get_nightlies(device)
+		response = FullUpdateInfo.get_nightlies(device)
 	except Exception:
 		response = []
 

@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from sebaubuntu_libs.liblineage import LINEAGEOS_TO_ANDROID_VERSION
-from sebaubuntu_libs.liblineage.ota import FullUpdateInfo
-from sebaubuntu_libs.liblineage.wiki import get_device_data
+from liblineage.constants.versions import LINEAGEOS_TO_ANDROID_VERSION
+from liblineage.ota.full_update_info import FullUpdateInfo
+from liblineage.wiki.device_data import DeviceData
 from sebaubuntu_libs.liblogging import LOGE
 from telegram import Bot
 from telegram.constants import ParseMode
@@ -24,7 +24,7 @@ class Poster:
 
 	async def post(self, codename: str, update: FullUpdateInfo, chat_id: str = None):
 		chat = await self.bot.get_chat(chat_id=(chat_id if chat_id else self.chat_id))
-		device_data = get_device_data(codename)
+		device_data = DeviceData.get_device_data(codename)
 		text = (
 			f"{escape_markdown(f'#{codename}', 2)} {escape_markdown(f'#{LINEAGEOS_TO_ANDROID_VERSION[update.version].version_short.lower()}', 2)}\n"
 			f"*LineageOS {escape_markdown(update.version, 2)} for {escape_markdown(device_data.vendor, 2)} {escape_markdown(device_data.name, 2)} {escape_markdown(f'({codename})', 2)}*\n"

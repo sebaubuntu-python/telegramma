@@ -6,9 +6,9 @@
 
 from calendar import day_name
 from humanize import naturalsize
+from liblineage.ota.full_update_info import FullUpdateInfo
+from liblineage.wiki.device_data import DeviceData
 from random import Random
-from sebaubuntu_libs.liblineage.ota import get_nightlies
-from sebaubuntu_libs.liblineage.wiki import get_device_data
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CallbackContext
@@ -21,7 +21,7 @@ async def info(update: Update, context: CallbackContext):
 
 	device = context.args[1]
 	try:
-		device_data = get_device_data(device)
+		device_data = DeviceData.get_device_data(device)
 	except Exception:
 		await update.message.reply_text("Error: Device not found")
 		return
@@ -34,7 +34,7 @@ async def last(update: Update, context: CallbackContext):
 		return
 
 	device = context.args[1]
-	response = get_nightlies(device)
+	response = FullUpdateInfo.get_nightlies(device)
 	if not response:
 		await update.message.reply_text(f"Error: no updates found for {device}")
 		return
@@ -55,7 +55,7 @@ async def when(update: Update, context: CallbackContext):
 	device = context.args[1]
 
 	try:
-		device_data = get_device_data(device)
+		device_data = DeviceData.get_device_data(device)
 	except Exception:
 		await update.message.reply_text("Error: Device not found")
 		return
