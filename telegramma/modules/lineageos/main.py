@@ -4,11 +4,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from calendar import day_name
 from humanize import naturalsize
-from liblineage.ota.full_update_info import FullUpdateInfo
-from liblineage.wiki.device_data import DeviceData
-from random import Random
+from liblineage.device import Device
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CallbackContext
@@ -19,9 +16,9 @@ async def info(update: Update, context: CallbackContext):
 		await update.message.reply_text("Device codename not specified")
 		return
 
-	device = context.args[1]
+	device = Device(context.args[1])
 	try:
-		device_data = DeviceData.get_device_data(device)
+		device_data = device.get_device_data()
 	except Exception:
 		await update.message.reply_text("Error: Device not found")
 		return
@@ -33,14 +30,14 @@ async def last(update: Update, context: CallbackContext):
 		await update.message.reply_text("Device codename not specified")
 		return
 
-	device = context.args[1]
-	response = FullUpdateInfo.get_nightlies(device)
-	if not response:
-		await update.message.reply_text(f"Error: no updates found for {device}")
+	device = Device(context.args[1])
+	nightlies = device.get_nightlies()
+	if not nightlies:
+		await update.message.reply_text(f"Error: no updates found for {device.codename}")
 		return
 
-	last_update = response[-1]
-	await update.message.reply_text(f"Last update for {escape_markdown(device, 2)}:\n"
+	last_update = nightlies[-1]
+	await update.message.reply_text(f"Last update for {escape_markdown(device.codename, 2)}:\n"
 	                                f"Version: {escape_markdown(last_update.version, 2)}\n"
 	                                f"Date: {last_update.datetime.strftime('%Y/%m/%d')}\n"
 	                                f"Size: {escape_markdown(naturalsize(last_update.size), 2)}\n"
@@ -52,23 +49,26 @@ async def when(update: Update, context: CallbackContext):
 		await update.message.reply_text("Device codename not specified")
 		return
 
-	device = context.args[1]
+	device = Device(context.args[1])
 
 	try:
-		device_data = DeviceData.get_device_data(device)
+		device_data = device.get_device_data()
 	except Exception:
-		await update.message.reply_text("Error: Device not found")
+		device_data = None
+
+	try:
+		build_target = device.get_hudson_build_target()
+	except Exception:
+		await update.message.reply_text(f"Error: Device {'unmaintained' if device_data else 'not found'}")
 		return
 
-	if not device_data.maintainers:
-		await update.message.reply_text("Error: Device not maintained")
-		return
+	device_info = (f"{device_data.vendor} {device_data.name} ({device_data.codename})"
+	               if device_data
+	               else f"{device.codename}")
 
-	random = Random()
-	random.seed(device, version=1)
-	day_int = int(1+7*random.random())
-	day = day_name[day_int - 1]
-	await update.message.reply_text(f"The next build for {device_data.vendor} {device_data.name} ({device}) will be on {day}")
+	await update.message.reply_text(
+		f"The next build for {device_info} will be on {build_target.get_next_build_date()}"
+	)
 
 # name: function
 COMMANDS = {
