@@ -43,7 +43,7 @@ class _DatabaseFile:
 			return {}
 
 	@classmethod
-	def dump(cls, d: dict):
+	def sync(cls, d: dict):
 		with cls.__lock:
 			now = datetime.now()
 			should_sync = False
@@ -160,7 +160,7 @@ class Database:
 
 			cls.__dict.update(d)
 
-		cls.__dump()
+		cls.__sync()
 
 	@classmethod
 	def set(cls, k: str, v):
@@ -169,6 +169,6 @@ class Database:
 			return cls.__set(k, v)
 
 	@classmethod
-	def __dump(cls):
-		"""Dump the database to file."""
-		_DatabaseFile.dump(cls.__dict)
+	def __sync(cls):
+		"""Sync the database to file."""
+		_DatabaseFile.sync(cls.__dict)
