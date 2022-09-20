@@ -54,7 +54,7 @@ class Database:
 	@classmethod
 	def __has(cls, k: str):
 		"""Unprotected cls.has implementation."""
-		if type(k) is not str:
+		if not isinstance(k, str):
 			raise TypeError("Key isn't a string")
 
 		if not '.' in k:
@@ -79,7 +79,7 @@ class Database:
 	@classmethod
 	def __get(cls, k: str, default=None):
 		"""Unprotected cls.get implementation."""
-		if type(k) is not str:
+		if not isinstance(k, str):
 			raise TypeError("Key isn't a string")
 
 		if not '.' in k:
@@ -104,7 +104,7 @@ class Database:
 	@classmethod
 	def __set(cls, k: str, v):
 		"""Unprotected cls.set implementation."""
-		if type(k) is not str:
+		if not isinstance(k, str):
 			raise TypeError("Key isn't a string")
 
 		if type(v) not in cls.ALLOWED_DATA_TYPES:
