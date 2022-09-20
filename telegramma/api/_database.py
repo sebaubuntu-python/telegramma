@@ -43,11 +43,13 @@ class _DatabaseFile:
 			return {}
 
 	@classmethod
-	def sync(cls, d: dict):
+	def sync(cls, d: dict, force: bool = False):
 		with cls.__lock:
 			now = datetime.now()
 			should_sync = False
-			if not cls.__last_sync:
+			if force:
+				should_sync = True
+			elif not cls.__last_sync:
 				should_sync = True
 			elif now - cls.__last_sync > DATABASE_SYNC_DELTA:
 				should_sync = True
@@ -169,6 +171,12 @@ class Database:
 			return cls.__set(k, v)
 
 	@classmethod
-	def __sync(cls):
+	def __sync(cls, force: bool = False):
+		"""Unprotected cls.sync implementation."""
+		_DatabaseFile.sync(cls.__dict, force)
+
+	@classmethod
+	def sync(cls, force: bool = False):
 		"""Sync the database to file."""
-		_DatabaseFile.sync(cls.__dict)
+		with cls.__dict_lock:
+			cls.__sync(force)
