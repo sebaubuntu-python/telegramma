@@ -13,7 +13,7 @@ from telegram.ext import Application, ContextTypes
 from typing import Dict, List
 
 from telegramma import __name__ as __bot_name__
-from telegramma.api import Module
+from telegramma.api import Database, Module
 from telegramma.core.error_handler import error_handler
 from telegramma.core.modules import get_all_modules, get_module
 
@@ -58,6 +58,9 @@ class Bot:
 		(task.cancel() for task in self.tasks)
 		# Wait for all tasks to finish
 		await gather(*self.tasks, return_exceptions=True)
+
+		# Sync the database
+		Database.sync(force=True)
 
 	def run(self) -> None:
 		self.application.run_polling()
