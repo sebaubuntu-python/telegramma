@@ -40,6 +40,7 @@ class Bot:
 		                    .token(token)
 		                    .context_types(ContextTypes(bot_data=lambda: self))
 		                    .post_init(self._post_init)
+		                    .post_shutdown(self._post_shutdown)
 		                    .build())
 
 	async def _post_init(self, application: Application):
@@ -52,6 +53,12 @@ class Bot:
 
 		await self.update_my_commands()
 
+	async def _post_shutdown(self, application: Application):
+		# Stop all tasks
+		(task.cancel() for task in self.tasks)
+		# Wait for all tasks to finish
+		await gather(*self.tasks, return_exceptions=True)
+
 	def run(self) -> None:
 		self.application.run_polling()
 
@@ -60,11 +67,6 @@ class Bot:
 
 	async def stop(self, restart: bool = False) -> None:
 		self._should_restart = restart
-
-		# Stop all tasks
-		(task.cancel() for task in self.tasks)
-		# Wait for all tasks to finish
-		await gather(*self.tasks, return_exceptions=True)
 
 		kill(getpid(), SIGTERM)
 
