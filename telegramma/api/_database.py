@@ -7,28 +7,41 @@
 
 import json
 from pathlib import Path
+from sebaubuntu_libs.liblogging import LOGE, LOGI
 from sebaubuntu_libs.libstring import removesuffix
 from threading import Lock
+from typing import Dict
 
 class _DatabaseFile:
 	"""telegramma database file class."""
-	__file_name = "data.json"
-
-	__file_path = Path(__file_name)
+	__file_path = Path("data.json")
+	__backup_file_path = Path("data.json.bak")
 	__file_lock = Lock()
 
 	@classmethod
-	def load(cls):
+	def load(cls) -> Dict[str, Dict]:
 		with cls.__file_lock:
 			if cls.__file_path.is_file():
-				return json.loads(cls.__file_path.read_bytes())
+				try:
+					return json.loads(cls.__file_path.read_bytes())
+				except Exception as e:
+					LOGE(f"Error loading database file: {e}")
+			if cls.__backup_file_path.is_file():
+				try:
+					return json.loads(cls.__backup_file_path.read_bytes())
+				except Exception as e:
+					LOGE(f"Error loading database backup file: {e}")
 
+			LOGI("Creating new database file")
 			return {}
 
 	@classmethod
 	def dump(cls, d: dict):
 		with cls.__file_lock:
-			cls.__file_path.write_text(json.dumps(d, sort_keys=True))
+			json_text = json.dumps(d)
+			cls.__backup_file_path.unlink(missing_ok=True)
+			cls.__file_path.rename(cls.__backup_file_path)
+			cls.__file_path.write_text(json_text)
 
 class Database:
 	"""telegramma database class.
