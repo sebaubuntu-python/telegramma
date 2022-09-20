@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 config = {
 	# [START]
 	"bot": {
@@ -12,6 +14,10 @@ config = {
 		# Chat ID of the logging chat
 		# type: int
 		"logging_chat_id": 0,
+
+		# Minimum time delta before syncing database to storage
+		# type: timedelta
+		"database_sync_delta": timedelta(minutes=5),
 	},
 
 	"bridgey": {

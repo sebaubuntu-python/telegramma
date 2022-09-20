@@ -5,6 +5,7 @@
 #
 """telegramma database implementation."""
 
+from datetime import datetime, timedelta
 import json
 from pathlib import Path
 from sebaubuntu_libs.liblogging import LOGE, LOGI
@@ -12,15 +13,21 @@ from sebaubuntu_libs.libstring import removesuffix
 from threading import Lock
 from typing import Dict
 
+from telegramma.api import get_config_namespace
+
+CONFIG_NAMESPACE = get_config_namespace("bot")
+DATABASE_SYNC_DELTA: timedelta = CONFIG_NAMESPACE.get("database_sync_delta", timedelta(minutes=5))
+
 class _DatabaseFile:
 	"""telegramma database file class."""
 	__file_path = Path("data.json")
 	__backup_file_path = Path("data.json.bak")
-	__file_lock = Lock()
+	__last_sync: datetime = None
+	__lock = Lock()
 
 	@classmethod
 	def load(cls) -> Dict[str, Dict]:
-		with cls.__file_lock:
+		with cls.__lock:
 			if cls.__file_path.is_file():
 				try:
 					return json.loads(cls.__file_path.read_bytes())
@@ -37,11 +44,23 @@ class _DatabaseFile:
 
 	@classmethod
 	def dump(cls, d: dict):
-		with cls.__file_lock:
+		with cls.__lock:
+			now = datetime.now()
+			should_sync = False
+			if not cls.__last_sync:
+				should_sync = True
+			elif now - cls.__last_sync > DATABASE_SYNC_DELTA:
+				should_sync = True
+
+			if not should_sync:
+				return
+
 			json_text = json.dumps(d)
 			cls.__backup_file_path.unlink(missing_ok=True)
 			cls.__file_path.rename(cls.__backup_file_path)
 			cls.__file_path.write_text(json_text)
+
+			cls.__last_sync = now
 
 class Database:
 	"""telegramma database class.
