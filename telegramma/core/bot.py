@@ -56,8 +56,6 @@ class Bot:
 	async def _post_shutdown(self, application: Application):
 		# Stop all tasks
 		(task.cancel() for task in self.tasks)
-		# Wait for all tasks to finish
-		await gather(*self.tasks, return_exceptions=True)
 
 		# Sync the database
 		Database.sync(force=True)
