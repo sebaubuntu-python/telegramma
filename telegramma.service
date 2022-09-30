@@ -10,6 +10,8 @@ ExecStart=/usr/bin/python3 -m telegramma
 Type=simple
 Restart=always
 RestartSec=5
+# Don't die if OOM killer kills a subprocess
+OOMPolicy=continue
 # If you want to execute it as non-root (recommended)
 User=seba
 
