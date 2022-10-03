@@ -272,7 +272,7 @@ gitdb = ">=4.0.1,<5"
 
 [[package]]
 name = "guilded.py"
-version = "1.3.0"
+version = "1.4.0"
 description = "An API wrapper in Python for Guilded's bot API"
 category = "main"
 optional = false
@@ -280,6 +280,9 @@ python-versions = ">=3.8.0"
 
 [package.dependencies]
 aiohttp = "*"
+
+[package.extras]
+docs = ["sphinx (==4.4.0)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websupport", "typing-extensions (>=4.3,<5)"]
 
 [[package]]
 name = "h11"
@@ -1210,8 +1213,8 @@ gitpython = [
     {file = "GitPython-3.1.27.tar.gz", hash = "sha256:1c885ce809e8ba2d88a29befeb385fcea06338d3640712b59ca623c220bb5704"},
 ]
 "guilded.py" = [
-    {file = "guilded.py-1.3.0-py3-none-any.whl", hash = "sha256:dadf390c398333523e148fffb3055d41ad4056c253e53a6c68282b69b6f6f6f6"},
-    {file = "guilded.py-1.3.0.tar.gz", hash = "sha256:3a285c4f151a8798adf3d3cb83706cad2e92b3f6bfc1867aa0a17cc7c2a15dc5"},
+    {file = "guilded.py-1.4.0-py3-none-any.whl", hash = "sha256:c9d1ba52f852cfc0018537be267923a05af3c97a78dbac64996d2e9eab1c4e01"},
+    {file = "guilded.py-1.4.0.tar.gz", hash = "sha256:ea3b8334eefcdf1eb1800846076933b168f109dac968fbbfcbb19b69af194dfa"},
 ]
 h11 = [
     {file = "h11-0.12.0-py3-none-any.whl", hash = "sha256:36a3cb8c0a032f56e2da7084577878a035d3b61d104230d4bd49c0c6b555a9c6"},
