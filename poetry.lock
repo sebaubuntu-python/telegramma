@@ -465,7 +465,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "matrix-nio"
-version = "0.20.0"
+version = "0.20.1"
 description = "A Python Matrix client library, designed according to sans I/O principles."
 category = "main"
 optional = false
@@ -1318,8 +1318,8 @@ markupsafe = [
     {file = "MarkupSafe-2.1.1.tar.gz", hash = "sha256:7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"},
 ]
 matrix-nio = [
-    {file = "matrix-nio-0.20.0.tar.gz", hash = "sha256:e4116279e329ffc5ac06813635e37a837e1684beffe2c14713d596b010b999f9"},
-    {file = "matrix_nio-0.20.0-py3-none-any.whl", hash = "sha256:b9b85a54a9a47ead41c0435f27490296d3ba218e411be5feb9abc9bcb3d6d174"},
+    {file = "matrix_nio-0.20.1-py3-none-any.whl", hash = "sha256:fd537e90ccd98e876fda91ab1f7eace9d754f788ae1d52f5803c60d1515d1a4e"},
+    {file = "matrix_nio-0.20.1.tar.gz", hash = "sha256:21a846a972fea6e372a867b46f89a5742c00c0e6daabbc44f4228e4ca959ac47"},
 ]
 multidict = [
     {file = "multidict-6.0.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0b9e95a740109c6047602f4db4da9949e6c5945cefbad34a1299775ddc9a62e2"},
