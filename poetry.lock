@@ -272,7 +272,7 @@ gitdb = ">=4.0.1,<5"
 
 [[package]]
 name = "guilded-py"
-version = "1.5.0"
+version = "1.5.1"
 description = "An API wrapper in Python for Guilded's bot API"
 category = "main"
 optional = false
@@ -1213,8 +1213,8 @@ GitPython = [
     {file = "GitPython-3.1.29.tar.gz", hash = "sha256:cc36bfc4a3f913e66805a28e84703e419d9c264c1077e537b54f0e1af85dbefd"},
 ]
 guilded-py = [
-    {file = "guilded.py-1.5.0-py3-none-any.whl", hash = "sha256:e3cac36d77552148405fe3ffa520dad393052dfdba58a3e5a5358b036cee6b35"},
-    {file = "guilded.py-1.5.0.tar.gz", hash = "sha256:79219e9b5193eb1f5108f3d10b8b4b96a853978ccb69b7357800c7797ecb277c"},
+    {file = "guilded.py-1.5.1-py3-none-any.whl", hash = "sha256:81b2e292db6791acb9ad57aabfd8bc265b106780cd93c070e3848917d576941a"},
+    {file = "guilded.py-1.5.1.tar.gz", hash = "sha256:056c958e22ceb481ed8ad7483d7fd94dc837a57f355479f34832486900099762"},
 ]
 h11 = [
     {file = "h11-0.12.0-py3-none-any.whl", hash = "sha256:36a3cb8c0a032f56e2da7084577878a035d3b61d104230d4bd49c0c6b555a9c6"},
