@@ -610,7 +610,7 @@ trio = ["trio (>=0.16.0)"]
 
 [[package]]
 name = "python-telegram-bot"
-version = "20.0a6"
+version = "20.0"
 description = "We have made you a wrapper you can't refuse"
 category = "main"
 optional = false
@@ -1424,8 +1424,8 @@ python-socks = [
     {file = "python_socks-2.0.3-py3-none-any.whl", hash = "sha256:950723f27d2cf401e193a9e0a0d45baab848341298f5b397d27fda0c4635e9a9"},
 ]
 python-telegram-bot = [
-    {file = "python-telegram-bot-20.0a6.tar.gz", hash = "sha256:aac039b54043d5c1778b182d506f2d51ddccef746eeb36e6ca9a236c4cd1c848"},
-    {file = "python_telegram_bot-20.0a6-py3-none-any.whl", hash = "sha256:0279d0d727ab36e4b42a8819656098485bcd0724961c2f5fced3218b15b26c02"},
+    {file = "python-telegram-bot-20.0.tar.gz", hash = "sha256:9ff3d7b03d0e621df6c903622338e30d761e121c27179e13f62ba2216b7c6d32"},
+    {file = "python_telegram_bot-20.0-py3-none-any.whl", hash = "sha256:2f7f0a0eee6517ffb3e9732b622b5c97c107517f35dc2a97273c74cb5ed39e9d"},
 ]
 requests = [
     {file = "requests-2.28.1-py3-none-any.whl", hash = "sha256:8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349"},
