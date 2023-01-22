@@ -5,8 +5,8 @@
 #
 
 from aiohttp import ClientSession
-from git import Repo
 from git.exc import GitCommandError
+from git.repo import Repo
 from github import Github, GithubException
 from pathlib import Path
 from sebaubuntu_libs.libexception import format_exception
@@ -28,7 +28,7 @@ CHAT_ID = CONFIG_NAMESPACE.get("chat_id")
 DATA_IS_VALID = bool(GITHUB_USERNAME and GITHUB_TOKEN and GITHUB_ORG)
 
 async def twrpdtgen(update: Update, context: CallbackContext):
-	if len(context.args) != 1:
+	if not context.args or len(context.args) != 1:
 		await update.message.reply_text("Usage: /twrpdtgen <url>")
 		return
 

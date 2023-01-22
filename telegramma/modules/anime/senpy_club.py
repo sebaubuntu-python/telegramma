@@ -5,7 +5,7 @@
 #
 
 from aiohttp import ClientSession
-from typing import List, Union
+from typing import List, Optional, Union
 from urllib.request import pathname2url
 
 class Image:
@@ -56,7 +56,7 @@ class SenpyClubAPI:
 		return await cls._get_senpy_club_api_result("languages") or []
 
 	@classmethod
-	async def is_language_supported(cls, language: str, languages: List[str] = None) -> Union[str, None]:
+	async def is_language_supported(cls, language: str, languages: Optional[List[str]] = None) -> Union[str, None]:
 		"""
 		Check if the provided language is supported by the API.
 

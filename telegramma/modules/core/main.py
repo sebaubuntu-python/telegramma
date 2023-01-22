@@ -29,7 +29,7 @@ async def enable(update: Update, context: CallbackContext):
 		await update.message.reply_text("Error: You are not authorized to load modules")
 		return
 
-	if len(context.args) < 1:
+	if not context.args or len(context.args) < 1:
 		await update.message.reply_text("Error: Module name not provided")
 		return
 
@@ -51,7 +51,7 @@ async def disable(update: Update, context: CallbackContext):
 		await update.message.reply_text("Error: You are not authorized to unload modules")
 		return
 
-	if len(context.args) < 1:
+	if not context.args or len(context.args) < 1:
 		await update.message.reply_text("Error: Module name not provided")
 		return
 

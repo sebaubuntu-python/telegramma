@@ -8,11 +8,12 @@
 from importlib import import_module
 from sebaubuntu_libs.libexception import format_exception
 from sebaubuntu_libs.liblogging import LOGE
+from typing import Optional
 
 from telegramma.api import Module
 from telegramma.modules import modules_path
 
-def get_module(name: str) -> Module:
+def get_module(name: str) -> Optional[Module]:
 	"""Import a module from telegramma/modules."""
 	try:
 		module = import_module(f"telegramma.modules.{name}.__module__")

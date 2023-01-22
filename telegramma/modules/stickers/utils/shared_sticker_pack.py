@@ -6,18 +6,18 @@
 
 from telegram import Bot, Sticker
 from telegram.error import TelegramError
-from typing import List
+from typing import List, Optional
 
 from telegramma.api import Database
 
 class SharedStickerPack:
-	def __init__(self, name: str, owner_id: int, admins: List[int] = None):
+	def __init__(self, name: str, owner_id: int, admins: Optional[List[int]] = None):
 		self.name = name
 		self._owner_id = owner_id
 		self._admins = admins or []
 
 	@classmethod
-	def from_sticker_pack_name(cls, name: str, telegram_bot: Bot = None):
+	def from_sticker_pack_name(cls, name: str, telegram_bot: Optional[Bot] = None):
 		"""
 		Create a SharedStickerPack from a sticker pack name.
 

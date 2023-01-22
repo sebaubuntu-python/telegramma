@@ -11,7 +11,7 @@ from pathlib import Path
 from sebaubuntu_libs.liblogging import LOGE, LOGI
 from sebaubuntu_libs.libstring import removesuffix
 from threading import Lock
-from typing import Dict
+from typing import Dict, Optional
 
 from telegramma.api import get_config_namespace
 
@@ -22,7 +22,7 @@ class _DatabaseFile:
 	"""telegramma database file class."""
 	__file_path = Path("data.json")
 	__backup_file_path = Path("data.json.bak")
-	__last_sync: datetime = None
+	__last_sync: Optional[datetime] = None
 	__lock = Lock()
 
 	@classmethod

@@ -12,7 +12,7 @@ from telegram.ext import CallbackContext
 from telegram.helpers import escape_markdown
 
 async def info(update: Update, context: CallbackContext):
-	if len(context.args) < 2:
+	if not context.args or len(context.args) < 2:
 		await update.message.reply_text("Device codename not specified")
 		return
 
@@ -26,7 +26,7 @@ async def info(update: Update, context: CallbackContext):
 	await update.message.reply_text(f"{device_data}", disable_web_page_preview=True)
 
 async def last(update: Update, context: CallbackContext):
-	if len(context.args) < 2:
+	if not context.args or len(context.args) < 2:
 		await update.message.reply_text("Device codename not specified")
 		return
 
@@ -45,7 +45,7 @@ async def last(update: Update, context: CallbackContext):
 	                                parse_mode=ParseMode.MARKDOWN_V2)
 
 async def when(update: Update, context: CallbackContext):
-	if len(context.args) < 2:
+	if not context.args or len(context.args) < 2:
 		await update.message.reply_text("Device codename not specified")
 		return
 
