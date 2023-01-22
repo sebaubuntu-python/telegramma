@@ -148,16 +148,6 @@ config = {
 		},
 	},
 
-	"lineageos_updates": {
-		# Enable new updates observer
-		# type: bool
-		"enable": False,
-
-		# Chat ID of the chat where the bot will send the update posts
-		# type: int
-		"chat_id": 0,
-	},
-
 	"translate": {
 		# DeepL API key
 		# type: str
