@@ -405,18 +405,21 @@ test = ["hypothesis (>=1.11.4,!=3.79.2)", "iso8601", "pretend", "pytest (>=6.2.0
 
 [[package]]
 name = "deepl"
-version = "1.12.0"
+version = "1.13.0"
 description = "Python library for the DeepL API."
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4"
 files = [
-    {file = "deepl-1.12.0-py3-none-any.whl", hash = "sha256:3b589aad11bc5c30a290d72e6c1af462d38968e87a0adf7681b322d97e30d563"},
-    {file = "deepl-1.12.0.tar.gz", hash = "sha256:223a118620946bae0016567cddffd36081f51d72c44240126d2b96c9e82a38d8"},
+    {file = "deepl-1.13.0-py3-none-any.whl", hash = "sha256:eeb9f19fcd89818a6226afbcbe19671ae66b12c4962d5855ae689a5b2455e40e"},
+    {file = "deepl-1.13.0.tar.gz", hash = "sha256:46aecbfeb81f249dd9b29b8bd487d9bfec7ad2df1c6513e4ad5af225fd7658b9"},
 ]
 
 [package.dependencies]
 requests = ">=2,<3"
+
+[package.extras]
+keyring = ["keyring (>=23.4.1,<24.0.0)"]
 
 [[package]]
 name = "Deprecated"
@@ -1648,4 +1651,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "1973be184fe971a1caa40f8d50bf38d5f1ed3ca26f02f7c31501c3a3fddac9bd"
+content-hash = "832d574c2107bb01a3d7c48aeb2373427e11a02e3d4693a347e0009c052fbc35"
