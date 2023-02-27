@@ -46,7 +46,7 @@ async def shell(update: Update, context: CallbackContext):
 
 	text_document = "Output: sent as document"
 
-	if len(text) + len(text_message) < MessageLimit.TEXT_LENGTH:
+	if len(text) + len(text_message) < MessageLimit.MAX_TEXT_LENGTH:
 		text += text_message
 		await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
 	else:
