@@ -11,6 +11,7 @@ from datetime import datetime
 from pathlib import Path
 import re
 from sebaubuntu_libs.libstring import removesuffix
+from typing import Optional
 
 from telegramma.api import get_config_namespace
 from telegramma.modules.ci.types.job import BaseJob
@@ -56,7 +57,7 @@ class AOSPJob(BaseJob):
 	# Target to build (e.g. to build a ROM's OTA package, use "bacon" or "otapackage", for a recovery project, use "recoveryimage")
 	build_target: str = "bacon"
 	# Regex to extract date from zip name, empty string to just use full name minus ".zip"
-	date_regex: str = None
+	date_regex: Optional[str] = None
 
 	def check_args(self):
 		"""Initialize AOSP project class."""
@@ -143,25 +144,25 @@ class AOSPJob(BaseJob):
 		build_result = AOSPReturnCode.from_code(process.returncode)
 
 		if build_result.needs_logs_upload():
-			with (self.project_dir / build_result.log_file).open("rb") as log_file:
+			with (self.project_dir / str(build_result.log_file)).open("rb") as log_file:
 				await post_manager.send_document(log_file)
 
 		if build_result is AOSPReturnCode.SUCCESS and UPLOAD_ARTIFACTS:
 			await self.upload(post_manager)
 		else:
-			await post_manager.update(build_result)
+			await post_manager.update(build_result.string)
 
 	async def upload(self, post_manager: PostManager):
 		artifacts = Artifacts(self.device_out_dir, [self.zip_name] + ADDITIONAL_ARTIFACTS)
 		try:
 			uploader = Uploader(self.uploader_profile)
 		except Exception as e:
-			post_manager.update(f"Upload failed: {type(e)}: {e}")
+			await post_manager.update(f"Upload failed: {type(e)}: {e}")
 			return
 
 		zip_filename = list(self.device_out_dir.glob(self.zip_name))
 		if not zip_filename:
-			post_manager.update("Upload failed: No zip file found")
+			await post_manager.update("Upload failed: No zip file found")
 			return
 
 		zip_filename = zip_filename[0].name

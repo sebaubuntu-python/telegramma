@@ -5,7 +5,7 @@
 #
 """Remote upload utils library."""
 
-from typing import Dict
+from typing import Dict, Type
 
 from telegramma.api import get_config_namespace
 from telegramma.modules.ci.types.uploader import BaseUploader
@@ -19,7 +19,7 @@ CONFIG_NAMESPACE = get_config_namespace("ci")
 
 UPLOAD_PROFILES: Dict[str, Dict] = CONFIG_NAMESPACE.get("upload_profiles", {})
 
-METHODS: Dict[str, BaseUploader] = {
+METHODS: Dict[str, Type[BaseUploader]] = {
 	"localcopy": UploaderLocalcopy,
 	"ftp": UploaderFTP,
 	"sftp": UploaderSFTP,

@@ -4,11 +4,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from typing import Optional
+
 class _AOSPReturnCode:
 	def __init__(self,
 	             return_code: int,
 				 string: str = "Build failed: Unknown error",
-				 log_file: str = None):
+				 log_file: Optional[str] = None):
 		self.return_code = return_code
 		self.string = string
 		self.log_file = log_file
@@ -57,5 +59,5 @@ class AOSPReturnCode(_AOSPReturnCode):
 	}
 
 	@classmethod
-	def from_code(self, code: int) -> _AOSPReturnCode:
-		return self._CODES.get(code, self(code))
+	def from_code(cls, code: int) -> _AOSPReturnCode:
+		return cls._CODES.get(code, cls(code))

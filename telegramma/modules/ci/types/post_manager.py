@@ -7,7 +7,7 @@
 from telegram import Bot, Message
 from telegram.error import TimedOut, RetryAfter
 from time import sleep
-from typing import Dict
+from typing import Dict, Optional
 
 from telegramma.api import get_config_namespace
 
@@ -27,7 +27,7 @@ class PostManager:
 		self.bot = bot
 
 		self.base_message_text = self._get_base_message_text()
-		self.message: Message = None
+		self.message: Optional[Message] = None
 		self.build_status = "Starting up"
 
 	def _get_base_message_text(self) -> str:
@@ -36,7 +36,7 @@ class PostManager:
 			*[f"{k}: {v}" for k, v in self.infos.items()],
 		])
 
-	async def update(self, status: str = None):
+	async def update(self, status: Optional[str] = None):
 		if status:
 			self.build_status = status
 
