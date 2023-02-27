@@ -59,7 +59,8 @@ class _DatabaseFile:
 
 			json_text = json.dumps(d)
 			cls.__backup_file_path.unlink(missing_ok=True)
-			cls.__file_path.rename(cls.__backup_file_path)
+			if cls.__file_path.is_file():
+				cls.__file_path.rename(cls.__backup_file_path)
 			cls.__file_path.write_text(json_text)
 
 			cls.__last_sync = now
