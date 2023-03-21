@@ -1082,14 +1082,14 @@ files = [
 
 [[package]]
 name = "py-cord"
-version = "2.4.0"
+version = "2.4.1"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "py-cord-2.4.0.tar.gz", hash = "sha256:2f35d92555ace5573b6349e010b4ad202603be0ab9f8afbc1d91b9cd1f203694"},
-    {file = "py_cord-2.4.0-py3-none-any.whl", hash = "sha256:2f81dcc3c8b06d7470a90a39b0245d85285ff4170c53720f28d494848d5d8dd5"},
+    {file = "py-cord-2.4.1.tar.gz", hash = "sha256:0266c9d9a9d2397622a0e5ead09826690e688ba3cf14c470167b81e6cd2d8a56"},
+    {file = "py_cord-2.4.1-py3-none-any.whl", hash = "sha256:862a372c364cd263e2c8e696c64887f969c02cbdf0fdd6b09f0283e9dd67a290"},
 ]
 
 [package.dependencies]
@@ -1654,4 +1654,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "1dbca429a339f5a6d7d4026bf0412ee8bd04734e841ae59f3ebd496ec672fb79"
+content-hash = "eccb756f3cfcdeb3b9e6e4d96c763a091f696f831f480a136487a4fca90d8409"
