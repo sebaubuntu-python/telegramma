@@ -113,7 +113,7 @@ class MatrixPlatform(BasePlatform):
 	def running(self):
 		return self.client is not None
 
-	async def file_to_generic(self, file: FILE_TYPE) -> Message:
+	async def file_to_generic(self, file: FILE_TYPE) -> File:
 		url = await self.client.mxc_to_http(file)
 		return File(platform=self,
 		            url=url)
