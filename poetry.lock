@@ -568,14 +568,14 @@ gitdb = ">=4.0.1,<5"
 
 [[package]]
 name = "guilded-py"
-version = "1.7.0"
+version = "1.8.0"
 description = "An API wrapper in Python for Guilded's bot API"
 category = "main"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "guilded.py-1.7.0-py3-none-any.whl", hash = "sha256:501c4b6d5dabf300e3ceb27051f799da5d1112e9816a96d32ba69d22a8df5684"},
-    {file = "guilded.py-1.7.0.tar.gz", hash = "sha256:86f3426414b842991660d683f5714fced8b06c412fb335dbb3905bea9730102a"},
+    {file = "guilded.py-1.8.0-py3-none-any.whl", hash = "sha256:45148d326bb57c74153c81e2f923d47b443495815af191cdec40f7625e84e216"},
+    {file = "guilded.py-1.8.0.tar.gz", hash = "sha256:c2e91b27f0adb1cdd971013f8f524bc889e3e2d6eb0ede596e56cecc62a2149e"},
 ]
 
 [package.dependencies]
@@ -1643,4 +1643,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "f6d12ff740f0bdb7cc8648034ebed553c17cad1e3e3a4820f43cd3efc2444e80"
+content-hash = "b01fbafd1d2f48aa36daacd883dafdc655480e31de76b49bee7611fdab17610a"
