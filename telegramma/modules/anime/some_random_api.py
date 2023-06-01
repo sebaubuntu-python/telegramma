@@ -8,8 +8,8 @@ from aiohttp import ClientSession
 from typing import Optional
 
 class SomeRandomAPIAnime:
-	"""some-random-api.ml API wrapper."""
-	API_ENDPOINT = "https://some-random-api.ml"
+	"""some-random-api.com API wrapper."""
+	API_ENDPOINT = "https://some-random-api.com"
 
 	@classmethod
 	async def _get_some_random_api_anime_result(cls, path: str) -> Optional[str]:
