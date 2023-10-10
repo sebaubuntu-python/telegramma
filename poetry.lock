@@ -777,13 +777,13 @@ files = [
 
 [[package]]
 name = "matrix-nio"
-version = "0.22.0"
+version = "0.22.1"
 description = "A Python Matrix client library, designed according to sans I/O principles."
 optional = false
 python-versions = ">=3.8.0,<4.0.0"
 files = [
-    {file = "matrix_nio-0.22.0-py3-none-any.whl", hash = "sha256:70812ebea066cc6e2613db956baa493f10f4b0ecc7e8a8ff3aeb7ba1adffb0e3"},
-    {file = "matrix_nio-0.22.0.tar.gz", hash = "sha256:1af372e343c413de9c2bdedd53b6f6a3e72fb26e1a9ea43cd73cd4bb150b82ca"},
+    {file = "matrix_nio-0.22.1-py3-none-any.whl", hash = "sha256:36a7175a41b145026db7f3bf004577aa8906d09ed8c53f276452ac06ed8635e4"},
+    {file = "matrix_nio-0.22.1.tar.gz", hash = "sha256:65956252c516f0b42b359d5816fbb66e2617a1f2c02ae45f2730257b815656d8"},
 ]
 
 [package.dependencies]
