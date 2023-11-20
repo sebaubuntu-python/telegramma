@@ -777,13 +777,13 @@ files = [
 
 [[package]]
 name = "matrix-nio"
-version = "0.22.1"
+version = "0.23.0"
 description = "A Python Matrix client library, designed according to sans I/O principles."
 optional = false
 python-versions = ">=3.8.0,<4.0.0"
 files = [
-    {file = "matrix_nio-0.22.1-py3-none-any.whl", hash = "sha256:36a7175a41b145026db7f3bf004577aa8906d09ed8c53f276452ac06ed8635e4"},
-    {file = "matrix_nio-0.22.1.tar.gz", hash = "sha256:65956252c516f0b42b359d5816fbb66e2617a1f2c02ae45f2730257b815656d8"},
+    {file = "matrix_nio-0.23.0-py3-none-any.whl", hash = "sha256:0d0ee61158f8e88eab8707fc80a575d5d0ed6e4a2c1b02088eb44ad21958a139"},
+    {file = "matrix_nio-0.23.0.tar.gz", hash = "sha256:24a858b962801ba12d72daa29fa34e540c9a828442fb43a822d80d9872967918"},
 ]
 
 [package.dependencies]
@@ -1553,4 +1553,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "51989aa3b86a7039cce0df0585b1465671a82eef131b1e20dbd361dcd49b6c83"
+content-hash = "3b387d509eecb9f1b0ccea8773814c5b37c122c7118e9d930a5ad2b25b91b6e3"
