@@ -91,7 +91,7 @@ class DiscordPlatform(BasePlatform):
 
 	async def user_to_generic(self, user: USER_TYPE):
 		return User(platform=self,
-		            name=f"{user.name}#{user.discriminator}",
+		            name=user.name,
 					url=f"https://discordapp.com/users/{user.id}",
 					avatar_url=user.avatar)
 
