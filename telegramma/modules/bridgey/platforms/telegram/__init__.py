@@ -88,7 +88,7 @@ class TelegramPlatform(BasePlatform):
 			file = await (message.voice if message.voice else message.audio).get_file()
 		elif message.sticker:
 			message_type = MessageType.STICKER
-			file = await message.sticker.thumb.get_file()
+			file = await message.sticker.thumbnail.get_file()
 			sticker_emoji = message.sticker.emoji
 		elif message.document:
 			message_type = MessageType.DOCUMENT
