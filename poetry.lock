@@ -403,13 +403,13 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "deepl"
-version = "1.16.1"
+version = "1.17.0"
 description = "Python library for the DeepL API."
 optional = false
 python-versions = ">=3.6.2,<4"
 files = [
-    {file = "deepl-1.16.1-py3-none-any.whl", hash = "sha256:17bd19a28850a10513377afc1b0e28ee907502e4a4a547d616bfa9cf65dfd4ea"},
-    {file = "deepl-1.16.1.tar.gz", hash = "sha256:b34d4a8644c9e62a7a9c24acfe80a07717bd0a3b2be77b633a10d5d4fe748dcd"},
+    {file = "deepl-1.17.0-py3-none-any.whl", hash = "sha256:2fb51fa8d9c04a081123c1f17c5bc3dd9c4711acd59687a71c470a345ab9b70c"},
+    {file = "deepl-1.17.0.tar.gz", hash = "sha256:23004a8247d75d80206adec4e29012e5ff5434e998f72463e193fce704ade1cb"},
 ]
 
 [package.dependencies]
@@ -1564,4 +1564,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "dfa0b918a12bc596cc4ff542cea048c5fee7247a38dfc7a1d1c90a8104af51fc"
+content-hash = "ee4a6bd55732786b19db97b5e5907caf9344e47d4bf4a67d9c765707b4ce74f5"
