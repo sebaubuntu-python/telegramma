@@ -7,7 +7,7 @@
 import asyncio
 from sebaubuntu_libs.liblogging import LOGW
 from threading import Lock
-from typing import TYPE_CHECKING, Any, Dict
+from typing import TYPE_CHECKING, Any, Dict, Type
 
 from telegramma.api import Database, get_config_namespace
 from telegramma.modules.bridgey.types.platform import BasePlatform
@@ -25,7 +25,7 @@ from telegramma.modules.bridgey.platforms.telegram import TelegramPlatform
 
 CONFIG_NAMESPACE = get_config_namespace("bridgey")
 
-PLATFORMS: Dict[str, BasePlatform] = {
+PLATFORMS: Dict[str, Type[BasePlatform]] = {
 	DiscordPlatform.NAME: DiscordPlatform,
 	GuildedPlatform.NAME: GuildedPlatform,
 	MatrixPlatform.NAME: MatrixPlatform,
@@ -43,9 +43,9 @@ class Pool:
 		self.messages_key = f"{self.database_key_prefix}.messages"
 		self.platforms_key = f"{self.database_key_prefix}.platforms"
 
-		self.last_message_id = (Database.get(self.last_message_id_key)
-		                        if Database.has(self.last_message_id_key)
-		                        else 0)
+		self.last_message_id: int = (Database.get(self.last_message_id_key)
+		                             if Database.has(self.last_message_id_key)
+		                             else 0)
 		self.last_message_id_lock = Lock()
 
 		self.pool_config = CONFIG_NAMESPACE.get("pools", {}).get(self.name, {})
@@ -53,13 +53,13 @@ class Pool:
 		self.platforms: Dict[str, BasePlatform] = {}
 
 		for platform_name, platform_data in self.pool_config.items():
-			if not "platform" in platform_data:
+			if "platform" not in platform_data:
 				LOGW(f"Pool {self.name} has an invalid platform, skipping")
 				continue
 
 			platform_type = platform_data["platform"]
 
-			if not platform_type in PLATFORMS:
+			if platform_type not in PLATFORMS:
 				LOGW(f"Pool {self.name} has an invalid platform type, skipping")
 				continue
 
@@ -92,4 +92,8 @@ class Pool:
 			if platform is message.platform:
 				continue
 
-			await platform.send_message(message, message_id)
+			try:
+				await platform.send_message(message, message_id)
+			except Exception as e:
+				LOGW(f"Failed to send message to {platform}: {e}")
+				continue

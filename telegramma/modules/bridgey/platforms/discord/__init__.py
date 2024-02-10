@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from __future__ import annotations
 from aiohttp import ClientSession
 from discord import (
 	Attachment,
@@ -12,22 +11,24 @@ from discord import (
 	Embed,
 	File as DiscordFile,
 	Intents,
+	Member,
 	Message as DiscordMessage,
 	TextChannel,
 	User as DiscordUser,
 )
 from io import BytesIO
 from sebaubuntu_libs.liblogging import LOGE
+from typing import Optional, Union
 
-from telegramma.modules.bridgey.types.platform import BasePlatform
 from telegramma.modules.bridgey.types.file import File
 from telegramma.modules.bridgey.types.message import Message
 from telegramma.modules.bridgey.types.message_type import MessageType
+from telegramma.modules.bridgey.types.platform import BasePlatform
 from telegramma.modules.bridgey.types.user import User
 
 class BridgeyDiscordClient(Bot):
 	"""Discord client that pass the message to DiscordPlatform."""
-	def __init__(self, platform: DiscordPlatform, *, loop=None, **options):
+	def __init__(self, platform: "DiscordPlatform", *, loop=None, **options):
 		"""Initialize the client."""
 		super().__init__(loop=loop, **options)
 
@@ -69,8 +70,7 @@ class DiscordPlatform(BasePlatform):
 		self.channel_id: int = self.data["channel_id"]
 		self.token: str = self.data["token"]
 
-		self.client = None
-		self.channel: TextChannel = None
+		self.channel: Optional[TextChannel] = None
 
 		self.client = BridgeyDiscordClient(self, intents=Intents.all())
 
@@ -85,15 +85,19 @@ class DiscordPlatform(BasePlatform):
 		return self.channel is not None
 
 	async def file_to_generic(self, file: FILE_TYPE):
-		return File(platform=self,
-		            url=file.url,
-		            name=file.filename)
+		return File(
+			platform=self,
+			url=file.url,
+			name=file.filename,
+		)
 
-	async def user_to_generic(self, user: USER_TYPE):
-		return User(platform=self,
-		            name=user.name,
-					url=f"https://discordapp.com/users/{user.id}",
-					avatar_url=user.avatar)
+	async def user_to_generic(self, user: Union[USER_TYPE, Member]):
+		return User(
+			platform=self,
+			name=user.name,
+			url=f"https://discordapp.com/users/{user.id}",
+			avatar_url=user.avatar.url if user.avatar else None,
+		)
 
 	async def message_to_generic(self, message: MESSAGE_TYPE):
 		message_type = MessageType.TEXT
@@ -121,16 +125,22 @@ class DiscordPlatform(BasePlatform):
 		if message.reference:
 			reply_to = self.get_generic_message_id(message.reference.message_id)
 
-		return Message(platform=self,
-		               message_type=message_type,
-		               user=(await self.user_to_generic(message.author)),
-					   timestamp=message.created_at,
-		               text=text,
-					   file=(await self.file_to_generic(file)) if file else None,
-					   reply_to=reply_to)
+		return Message(
+			platform=self,
+			message_type=message_type,
+			user=(await self.user_to_generic(message.author)),
+			timestamp=message.created_at,
+			text=text,
+			file=(await self.file_to_generic(file)) if file else None,
+			reply_to=reply_to,
+		)
 
 	async def send_message(self, message: Message, message_id: int):
 		if not self.running:
+			return
+
+		if not self.channel:
+			LOGE("Channel not found")
 			return
 
 		title = ""
@@ -142,8 +152,11 @@ class DiscordPlatform(BasePlatform):
 			description = message.sticker_emoji
 
 		embed = Embed(title=title, description=description, timestamp=message.timestamp)
-		embed.set_author(name=str(message.user), url=message.user.url,
-		                 icon_url=message.user.avatar_url)
+		embed.set_author(
+			name=str(message.user),
+			url=message.user.url,
+			icon_url=message.user.avatar_url,
+		)
 		embed.set_footer(text=message.platform.NAME, icon_url=message.platform.ICON_URL)
 
 		if message.file:
@@ -157,8 +170,10 @@ class DiscordPlatform(BasePlatform):
 				async with ClientSession() as session:
 					try:
 						async with session.get(message.file.url, raise_for_status=True) as response:
-							file = DiscordFile(BytesIO(await response.read()),
-							                   filename=message.file.name)
+							file = DiscordFile(
+								BytesIO(await response.read()),
+								filename=message.file.name,
+							)
 					except Exception as e:
 						LOGE(f"Failed to download file: {e}")
 						return

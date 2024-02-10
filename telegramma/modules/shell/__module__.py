@@ -18,7 +18,7 @@ from telegramma.modules.shell.main import (
 class ShellModule(Module):
 	NAME = "shell"
 	VERSION = "1.0"
-	CORE: True
+	CORE = True
 	HANDLERS = [
 		CommandHandler(["shell"], shell),
 	]

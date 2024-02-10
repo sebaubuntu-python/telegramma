@@ -11,12 +11,13 @@ from telegram.ext import CallbackContext
 from telegramma.api import TelegramArgumentParser
 
 class BaseJob:
-	def __init__(self,
-				 update: Update,
-				 context: CallbackContext,
-				 parser: TelegramArgumentParser,
-				 args: List[str],
-				) -> None:
+	def __init__(
+		self,
+		update: Update,
+		context: CallbackContext,
+		parser: TelegramArgumentParser,
+		args: List[str],
+	) -> None:
 		self.update = update
 		self.context = context
 		self.parser = parser

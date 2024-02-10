@@ -10,6 +10,9 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 async def nekobin(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	reply_to_message = update.message.reply_to_message
 
 	if not reply_to_message:
@@ -25,13 +28,18 @@ async def nekobin(update: Update, context: CallbackContext):
 	if reply_to_message.document:
 		try:
 			file = await reply_to_message.document.get_file()
-			with await file.download(out=BytesIO()) as f:
+			with BytesIO() as f:
+				await file.download_to_memory(out=f)
 				text = f.getvalue().decode(encoding="utf-8", errors="ignore")
 		except Exception:
 			await message.edit_text("Error: failed to download file from Telegram (probably too big)")
 			return
 	else:
 		text = reply_to_message.text
+
+	if not text:
+		await message.edit_text("Error: no text found")
+		return
 
 	try:
 		url = to_nekobin(text)

@@ -20,6 +20,9 @@ def format_result(date: datetime, download: int, upload: int) -> str:
 	)
 
 async def speedtest(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	now = datetime.now()
 
 	last_speedtest_timestamp = Database.get("speedtest.last_speedtest.timestamp")

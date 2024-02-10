@@ -23,7 +23,7 @@ from telegramma.modules.core.main import (
 class CoreModule(Module):
 	NAME = "core"
 	VERSION = "1.0"
-	CORE: True
+	CORE = True
 	HANDLERS = [
 		CommandHandler(["start", "help"], start),
 		CommandHandler(["modules"], modules),

@@ -21,7 +21,8 @@ from nio import (
 	SyncResponse,
 )
 from sebaubuntu_libs.libexception import format_exception
-from sebaubuntu_libs.liblogging import LOGE
+from sebaubuntu_libs.liblogging import LOGE, LOGW
+from typing import Optional
 
 from telegramma.api import Database
 from telegramma.modules.bridgey.platforms.matrix.utils.files import upload_file_to_matrix
@@ -49,9 +50,9 @@ class MatrixPlatform(BasePlatform):
 		if not self.homeserver_url.startswith("https://") and not self.homeserver_url.startswith("http://"):
 			self.homeserver_url = f"https://{self.homeserver_url}"
 
-		self.client: AsyncClient = None
-		self.last_sync_token: str = None
-		self.room_id: str = None
+		self.client: Optional[AsyncClient] = None
+		self.last_sync_token: Optional[str] = None
+		self.room_id: Optional[str] = None
 
 	async def start(self) -> None:
 		self.client = AsyncClient(self.homeserver_url, self.username)
@@ -87,7 +88,8 @@ class MatrixPlatform(BasePlatform):
 		await self.client.sync_forever(since=self.last_sync_token)
 
 	async def stop(self):
-		await self.client.close()
+		if self.client:
+			await self.client.close()
 
 	async def sync_callback(self, sync_response: SyncResponse) -> None:
 		if sync_response.next_batch == self.last_sync_token:
@@ -97,6 +99,10 @@ class MatrixPlatform(BasePlatform):
 		self.last_sync_token = sync_response.next_batch
 
 	async def handle_msg(self, room: MatrixRoom, event: RoomMessage):
+		if not self.client:
+			LOGE("Client is None and we received a message?")
+			return
+
 		if room.room_id != self.room_id:
 			return
 
@@ -114,22 +120,37 @@ class MatrixPlatform(BasePlatform):
 		return self.client is not None
 
 	async def file_to_generic(self, file: FILE_TYPE) -> File:
+		if not self.client:
+			raise Exception("Client is None")
+
 		url = await self.client.mxc_to_http(file)
-		return File(platform=self,
-		            url=url)
+		if not url:
+			raise Exception("Failed to convert mxc to http")
+
+		return File(
+			platform=self,
+			url=url,
+		)
 
 	async def user_to_generic(self, user: USER_TYPE) -> User:
+		if not self.client:
+			raise Exception("Client is None")
+
 		avatar_url = ""
 
 		get_avatar_response = await self.client.get_avatar(user)
-		if isinstance(get_avatar_response, ProfileGetAvatarResponse):
-			if get_avatar_response.avatar_url:
-				avatar_url = await self.client.mxc_to_http(get_avatar_response.avatar_url)
+		if isinstance(get_avatar_response, ProfileGetAvatarResponse) \
+				and get_avatar_response.avatar_url:
+			avatar_url = await self.client.mxc_to_http(get_avatar_response.avatar_url)
+			if not avatar_url:
+				LOGW(f"Failed to convert mxc to http for {get_avatar_response.avatar_url}")
 
-		return User(platform=self,
-		            name=user,
-		            url=f"https://matrix.to/#/{user}",
-		            avatar_url=avatar_url)
+		return User(
+			platform=self,
+			name=user,
+			url=f"https://matrix.to/#/{user}",
+			avatar_url=avatar_url,
+		)
 
 	async def message_to_generic(self, message: MESSAGE_TYPE) -> Message:
 		json = message.flattened()
@@ -161,16 +182,22 @@ class MatrixPlatform(BasePlatform):
 			in_reply_to = json["content.m.relates_to.m.in_reply_to.event_id"]
 			reply_to = reply_to = self.get_generic_message_id(in_reply_to)
 
-		return Message(platform=self,
-					   message_type=message_type,
-					   user=user,
-					   timestamp=datetime.fromtimestamp(message.server_timestamp / 1000),
-					   text=text,
-					   file=file,
-					   reply_to=reply_to)
+		return Message(
+			platform=self,
+			message_type=message_type,
+			user=user,
+			timestamp=datetime.fromtimestamp(message.server_timestamp / 1000),
+			text=text,
+			file=file,
+			reply_to=reply_to,
+		)
 
 	async def send_message(self, message: Message, message_id: int):
 		if not self.running:
+			return
+
+		if not self.client:
+			LOGE("Client is None")
 			return
 
 		if self.room_id is None:

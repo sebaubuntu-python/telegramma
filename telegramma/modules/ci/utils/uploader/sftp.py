@@ -13,15 +13,19 @@ from telegramma.modules.ci.types.uploader import BaseUploader
 
 class UploaderSFTP(BaseUploader):
 	def _upload(self, file: Path, destination_path: Path):
+		assert self.server, "Server not set"
 		transport = Transport(self.server)
-		transport.connect(username=self.username, password=self.password)
+		username = self.username or ""
+		password = self.password or None
+		transport.connect(username=username, password=password)
 		sftp = SFTPClient.from_transport(transport)
-		self.chdir(sftp, destination_path)
+		assert sftp, "SFTP not initialized"
+		self.chdir(sftp, str(destination_path))
 		sftp.put(file, file.name)
 		sftp.close()
 		transport.close()
 
-	def chdir(self, sftp: SFTPClient, remote_directory: Path):
+	def chdir(self, sftp: SFTPClient, remote_directory: str):
 		if remote_directory == '/':
 			sftp.chdir(str(remote_directory))
 			return
@@ -30,9 +34,9 @@ class UploaderSFTP(BaseUploader):
 			return
 
 		try:
-			sftp.chdir(str(remote_directory))
+			sftp.chdir(remote_directory)
 		except IOError:
-			dirname, basename = os.path.split(str(remote_directory).rstrip('/'))
+			dirname, basename = os.path.split(remote_directory.rstrip('/'))
 			self.chdir(sftp, dirname)
 			sftp.mkdir(basename)
 			sftp.chdir(basename)

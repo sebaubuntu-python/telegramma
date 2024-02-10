@@ -14,6 +14,12 @@ from telegram.helpers import escape_markdown
 from telegramma.api import user_is_admin
 
 async def shell(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
+	if not update.message.from_user:
+		return
+
 	if not user_is_admin(update.message.from_user.id):
 		await update.message.reply_text("Error: You are not authorized to use the shell")
 		return
@@ -22,11 +28,14 @@ async def shell(update: Update, context: CallbackContext):
 		await update.message.reply_text("Error: No command specified")
 		return
 
+	assert update.message.text is not None, "update.message.text is None"
+
 	command = update.message.text.split(' ', 1)[1]
 
 	process = await create_subprocess_shell(command, executable="/bin/bash",
 	                                        stdout=PIPE, stderr=STDOUT)
 	returncode = await process.wait()
+	assert process.stdout is not None, "process.stdout is None"
 	output = await process.stdout.read()
 	output_str = output.decode("utf-8", errors="ignore")
 
@@ -51,5 +60,9 @@ async def shell(update: Update, context: CallbackContext):
 		await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
 	else:
 		text += text_document
-		await update.message.reply_document(document=output, filename="output.txt", caption=text,
-		                                    parse_mode=ParseMode.MARKDOWN_V2)
+		await update.message.reply_document(
+			document=output,
+			filename="output.txt",
+			caption=text,
+			parse_mode=ParseMode.MARKDOWN_V2
+		)

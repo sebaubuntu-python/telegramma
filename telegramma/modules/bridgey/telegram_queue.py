@@ -7,6 +7,7 @@
 from asyncio import CancelledError, Queue
 from sebaubuntu_libs.libexception import format_exception
 from sebaubuntu_libs.liblogging import LOGI
+from typing import Optional
 
 from telegramma.core.bot import Bot
 from telegramma.modules.bridgey.types.message import Message
@@ -14,14 +15,16 @@ from telegramma.modules.bridgey.types.message_type import MessageType
 from telegramma.modules.bridgey.types.platform import BasePlatform
 
 class ToTelegramMessage:
-	def __init__(self,
-	             platform: BasePlatform,
-	             message: Message,
-	             message_id: int,
-	             chat_id: int,
-	             text: str,
-	             content: bytes,
-	             reply_to_message_id: int):
+	def __init__(
+		self,
+		platform: BasePlatform,
+		message: Message,
+		message_id: int,
+		chat_id: int,
+		text: str,
+		content: Optional[bytes],
+		reply_to_message_id: Optional[int],
+	):
 		self.platform = platform
 		self.message = message
 		self.message_id = message_id
@@ -45,16 +48,22 @@ class ToTelegramMessage:
 			if self.message.message_type is MessageType.TEXT:
 				telegram_message = await bot.application.bot.send_message(text=self.text, **kwargs)
 			elif self.message.message_type is MessageType.IMAGE:
+				assert self.content is not None
 				telegram_message = await bot.application.bot.send_photo(photo=self.content, **kwargs, **file_kwargs)
 			elif self.message.message_type is MessageType.VIDEO:
+				assert self.content is not None
 				telegram_message = await bot.application.bot.send_video(video=self.content, **kwargs, **file_kwargs)
 			elif self.message.message_type is MessageType.AUDIO:
+				assert self.content is not None
 				telegram_message = await bot.application.bot.send_audio(audio=self.content, **kwargs, **file_kwargs)
 			elif self.message.message_type is MessageType.DOCUMENT:
+				assert self.content is not None
 				telegram_message = await bot.application.bot.send_document(document=self.content, **kwargs, **file_kwargs)
 			elif self.message.message_type is MessageType.STICKER:
+				assert self.content is not None
 				telegram_message = await bot.application.bot.send_sticker(sticker=self.content, **kwargs)
 			elif self.message.message_type is MessageType.ANIMATION:
+				assert self.content is not None
 				telegram_message = await bot.application.bot.send_animation(animation=self.content, **kwargs, **file_kwargs)
 			else:
 				LOGI(f"Unknown message type: {self.message.message_type}")

@@ -22,6 +22,9 @@ async def get_random_item():
 			return None
 
 async def roll(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	chances = {
 		"yes": 0.05,
 		"no": 0.65,
@@ -33,6 +36,12 @@ async def roll(update: Update, context: CallbackContext):
 	await update.message.reply_text(f"The answer is: {choice}")
 
 async def slap(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
+	if not update.message.from_user:
+		return
+
 	username = update.message.from_user.username
 	if not username:
 		username = update.message.from_user.full_name
@@ -40,14 +49,16 @@ async def slap(update: Update, context: CallbackContext):
 	slapped_username = None
 	if context.args:
 		slapped_username = " ".join(context.args)
-	elif update.message.reply_to_message:
+	elif update.message.reply_to_message and update.message.reply_to_message.from_user:
 		slapped_username = update.message.reply_to_message.from_user.username
 		if not slapped_username:
 			slapped_username = update.message.reply_to_message.from_user.full_name
 
 	if not slapped_username:
-		await update.message.reply_text("I don't know who's the one you want to slap, "
-		                                "reply to a message or specify a username")
+		await update.message.reply_text(
+			"I don't know who's the one you want to slap, "
+			"reply to a message or specify a username"
+		)
 		return
 
 	text = f"*{username} slaps {slapped_username}"
@@ -61,6 +72,9 @@ async def slap(update: Update, context: CallbackContext):
 	await update.message.reply_text(text)
 
 async def whatis(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	if not context.args:
 		await update.message.reply_text(f"Error: You need to specify something")
 		return
@@ -75,6 +89,9 @@ async def whatis(update: Update, context: CallbackContext):
 	await update.message.reply_text(f"{text} is {random_item}")
 
 async def xda(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	length = randint(3, 10)
 	string = choices(list(WORDS.keys()), weights=list(WORDS.values()), k=length)
 	shuffle(string)

@@ -11,6 +11,9 @@ from telegramma.modules.bridgey.platforms.telegram import TelegramPlatform
 from telegramma.modules.bridgey.types.coordinator import Coordinator
 
 async def handle_telegram_update(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	for pool in Coordinator.pools.values():
 		for platform in pool.platforms.values():
 			if not isinstance(platform, TelegramPlatform):
@@ -22,6 +25,9 @@ async def handle_telegram_update(update: Update, context: CallbackContext):
 			await platform.on_message(await platform.message_to_generic(update.message), update.message.message_id)
 
 async def bridgey(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	reply = "Bridgey status:\n"
 	reply += f"Enabled: {Coordinator.enabled}\n\n"
 

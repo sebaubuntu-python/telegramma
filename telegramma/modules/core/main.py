@@ -10,10 +10,18 @@ from telegram.ext import CallbackContext
 from telegramma.api import VERSION, log_to_logging_chat, user_is_admin
 
 async def start(update: Update, context: CallbackContext):
-	await update.message.reply_text("Hi! I'm telegramma, and I'm alive\n"
-	                                f"Version {VERSION}\n")
+	if not update.message:
+		return
+
+	await update.message.reply_text(
+		"Hi! I'm telegramma, and I'm alive\n"
+		f"Version {VERSION}\n"
+	)
 
 async def modules(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	message = "Loaded modules:\n\n"
 	for module_name, module_instance in context.bot_data.modules.items():
 		message += (
@@ -25,6 +33,12 @@ async def modules(update: Update, context: CallbackContext):
 	await update.message.reply_text(message)
 
 async def enable(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
+	if not update.message.from_user:
+		return
+
 	if not user_is_admin(update.message.from_user.id):
 		await update.message.reply_text("Error: You are not authorized to load modules")
 		return
@@ -47,6 +61,12 @@ async def enable(update: Update, context: CallbackContext):
 	await update.message.reply_text("\n".join(text))
 
 async def disable(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
+	if not update.message.from_user:
+		return
+
 	if not user_is_admin(update.message.from_user.id):
 		await update.message.reply_text("Error: You are not authorized to unload modules")
 		return
@@ -69,6 +89,12 @@ async def disable(update: Update, context: CallbackContext):
 	await update.message.reply_text("\n".join(text))
 
 async def restart(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
+	if not update.message.from_user:
+		return
+
 	if not user_is_admin(update.message.from_user.id):
 		await update.message.reply_text("Error: You are not authorized to restart the bot")
 		return
@@ -92,6 +118,12 @@ async def restart(update: Update, context: CallbackContext):
 	await context.bot_data.stop(True)
 
 async def shutdown(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
+	if not update.message.from_user:
+		return
+
 	if not user_is_admin(update.message.from_user.id):
 		await update.message.reply_text("Error: You are not authorized to shutdown the bot")
 		return

@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from asyncio import TimeoutError, create_subprocess_exec, sleep, wait_for
+from asyncio import create_subprocess_exec, wait_for
 from asyncio.subprocess import PIPE, STDOUT
 from contextlib import suppress
 from datetime import datetime
@@ -118,6 +118,7 @@ class AOSPJob(BaseJob):
 			if process.returncode is not None:
 				break
 
+			assert process.stdout is not None, "stdout is None"
 			output = (await process.stdout.readline()).decode("utf-8", errors="ignore")
 			if not output:
 				continue

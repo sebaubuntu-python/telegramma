@@ -9,6 +9,9 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 async def sed_handler(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	if not update.message.reply_to_message:
 		return
 

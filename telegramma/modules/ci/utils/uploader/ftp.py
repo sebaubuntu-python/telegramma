@@ -13,13 +13,17 @@ from telegramma.modules.ci.types.uploader import BaseUploader
 
 class UploaderFTP(BaseUploader):
 	def _upload(self, file: Path, destination_path: Path):
+		assert self.server, "Server not set"
+
 		with FTP(self.server) as ftp: 
-			ftp.login(self.username, self.password)
-			self.chdir(ftp, destination_path)
+			username = self.username or ""
+			password = self.password or ""
+			ftp.login(username, password)
+			self.chdir(ftp, str(destination_path))
 			with open(file, 'rb') as f:
 				ftp.storbinary(f"STOR {file.name}", f)
 
-	def chdir(self, ftp: FTP, remote_directory: Path):
+	def chdir(self, ftp: FTP, remote_directory: str):
 		if remote_directory == '/':
 			ftp.cwd(str(remote_directory))
 			return
@@ -28,9 +32,9 @@ class UploaderFTP(BaseUploader):
 			return
 
 		try:
-			ftp.cwd(str(remote_directory))
+			ftp.cwd(remote_directory)
 		except error_perm:
-			dirname, basename = os.path.split(str(remote_directory).rstrip('/'))
+			dirname, basename = os.path.split(remote_directory.rstrip('/'))
 			self.chdir(ftp, dirname)
 			ftp.mkd(basename)
 			ftp.cwd(basename)

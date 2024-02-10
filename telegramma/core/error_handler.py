@@ -16,9 +16,13 @@ async def error_handler(update: Update, context: CallbackContext):
 	formatted_error = "Error encountered!\n"
 	if update:
 		if update.effective_chat:
-			chat_name = (update.effective_chat.title
-			             if update.effective_chat.title
-			             else update.effective_chat.full_name)
+			chat_name = (
+				update.effective_chat.title
+				if update.effective_chat.title
+				else update.effective_chat.full_name
+				if update.effective_chat.full_name
+				else "Unknown chat name"
+			)
 			if update.effective_chat.username:
 				chat_name += f" (@{update.effective_chat.username})"
 			else:

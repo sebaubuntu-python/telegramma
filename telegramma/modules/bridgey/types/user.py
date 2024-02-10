@@ -5,7 +5,7 @@
 #
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
 	from telegramma.modules.bridgey.types.platform import BasePlatform
@@ -20,13 +20,14 @@ class User:
 	- url: The user's URL
 	- avatar_url: The user's avatar URL
 	"""
-	def __init__(self,
-	             platform: BasePlatform,
-	             name: str,
-	             username: str = "",
-	             url: str = "",
-	             avatar_url: str = "",
-	            ):
+	def __init__(
+		self,
+		platform: BasePlatform,
+		name: str,
+		username: Optional[str] = None,
+		url: Optional[str] = None,
+		avatar_url: Optional[str] = None,
+	):
 		self.platform = platform
 		self.name = name
 		self.username = username

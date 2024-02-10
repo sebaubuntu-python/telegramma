@@ -21,6 +21,9 @@ DEFAULT_LANG = "en-us"
 TRANSLATOR = Translator(DEEPL_API_KEY) if DEEPL_API_KEY else None
 
 async def translate(update: Update, context: CallbackContext):
+	if not update.effective_message:
+		return
+
 	reply_to_message = update.effective_message.reply_to_message
 	if not reply_to_message:
 		await update.effective_message.reply_text("Please reply to a message to translate it")
@@ -46,8 +49,11 @@ async def translate(update: Update, context: CallbackContext):
 	try:
 		text_result = TRANSLATOR.translate_text(text, target_lang=to_lang)
 	except Exception as e:
-		await update.effective_message.reply_text(f"Error while translating the message, `{escape_markdown(to_lang, 2)}` is probably wrong: {escape_markdown(str(e), 2)}",
-		                                          parse_mode=ParseMode.MARKDOWN_V2)
+		await update.effective_message.reply_text(
+			"Error while translating the message,"
+			f" `{escape_markdown(to_lang, 2)}` is probably wrong: {escape_markdown(str(e), 2)}",
+			parse_mode=ParseMode.MARKDOWN_V2
+		)
 		return
 
 	reply_text = (

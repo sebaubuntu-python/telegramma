@@ -45,31 +45,39 @@ class TelegramPlatform(BasePlatform):
 		return True
 
 	async def file_to_generic(self, file: FILE_TYPE):
-		return File(platform=self,
-		            url=file.file_path)
+		assert file.file_path, "File has no path"
+
+		return File(
+			platform=self,
+			url=file.file_path,
+		)
 
 	async def user_to_generic(self, user: USER_TYPE):
+		user_propics = []
 		try:
-			user_propics = (await user.get_profile_photos()).photos
+			profile_photos = await user.get_profile_photos()
+			if profile_photos:
+				user_propics = profile_photos.photos
 		except BadRequest:
-			user_propics = []
+			pass
 
-		if user_propics:
-			avatar_url = (await user_propics[0][0].get_file()).file_path
-		else:
-			avatar_url = ""
+		avatar_url = (await user_propics[0][0].get_file()).file_path if user_propics else None
 
-		return User(platform=self,
-		            name=user.full_name,
-		            username=user.username,
-					url=f"https://t.me/{user.username}" if user.username else "",
-		            avatar_url=avatar_url)
+		return User(
+			platform=self,
+			name=user.full_name,
+			username=user.username,
+			url=f"https://t.me/{user.username}" if user.username else "",
+			avatar_url=avatar_url,
+		)
 
 	async def message_to_generic(self, message: MESSAGE_TYPE):
 		text = ""
 		file = None
-		sticker_emoji = ""
+		sticker_emoji = None
 		reply_to = None
+
+		assert message.from_user, "Message has no user"
 
 		if message.text:
 			message_type = MessageType.TEXT
@@ -81,13 +89,18 @@ class TelegramPlatform(BasePlatform):
 		elif message.video or message.animation:
 			message_type = (MessageType.ANIMATION if message.animation else MessageType.VIDEO)
 			text = message.caption
-			file = await (message.animation if message.animation else message.video).get_file()
+			animation_or_video = message.animation if message.animation else message.video
+			assert animation_or_video, "Message has no video or animation"
+			file = await animation_or_video.get_file()
 		elif message.audio or message.voice:
 			message_type = MessageType.AUDIO
 			text = message.caption
-			file = await (message.voice if message.voice else message.audio).get_file()
+			voice_or_audio = message.voice if message.voice else message.audio
+			assert voice_or_audio, "Message has no voice or audio"
+			file = await voice_or_audio.get_file()
 		elif message.sticker:
 			message_type = MessageType.STICKER
+			assert message.sticker.thumbnail, "Sticker has no thumbnail"
 			file = await message.sticker.thumbnail.get_file()
 			sticker_emoji = message.sticker.emoji
 		elif message.document:
@@ -100,14 +113,16 @@ class TelegramPlatform(BasePlatform):
 		if message.reply_to_message:
 			reply_to = self.get_generic_message_id(message.reply_to_message.message_id)
 
-		return Message(platform=self,
-		               message_type=message_type,
-		               user=(await self.user_to_generic(message.from_user)),
-		               timestamp=message.date,
-		               text=text if text else "",
-		               file=(await self.file_to_generic(file)) if file else None,
-					   sticker_emoji=sticker_emoji,
-		               reply_to=reply_to)
+		return Message(
+			platform=self,
+			message_type=message_type,
+			user=(await self.user_to_generic(message.from_user)),
+			timestamp=message.date,
+			text=text if text else "",
+			file=(await self.file_to_generic(file)) if file else None,
+			sticker_emoji=sticker_emoji,
+			reply_to=reply_to,
+		)
 
 	async def send_message(self, message: Message, message_id: int):
 		text = f"[{message.platform.NAME}] {message.user}:"
@@ -128,5 +143,14 @@ class TelegramPlatform(BasePlatform):
 		if message.reply_to:
 			reply_to_message_id = self.get_platform_message_id(message.reply_to)
 
-		to_telegram_message = ToTelegramMessage(self, message, message_id, self.chat_id, text, content, reply_to_message_id)
+		to_telegram_message = ToTelegramMessage(
+			self,
+			message,
+			message_id,
+			self.chat_id,
+			text,
+			content,
+			reply_to_message_id,
+		)
+
 		await put_message(to_telegram_message)

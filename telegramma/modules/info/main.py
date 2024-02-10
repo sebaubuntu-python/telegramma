@@ -29,6 +29,9 @@ def format_user_info(user: User):
 	)
 
 async def info(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	chat = None
 	message = None
 	user = None
@@ -47,17 +50,30 @@ async def info(update: Update, context: CallbackContext):
 		chat = update.message.chat
 		user = update.message.from_user
 
-	response = ("Info about the user:\n"
-		        f"{format_user_info(user)}")
+	response = ""
+
+	if user:
+		response = (
+			"\n"
+			"Info about the user:\n"
+			f"{format_user_info(user)}"
+		)
 
 	if chat:
-		response += ("\n"
-			         "Info about the chat:\n"
-		             f"{format_chat_info(chat)}")
+		response += (
+			"\n"
+			"Info about the chat:\n"
+			f"{format_chat_info(chat)}"
+		)
 
 	if message:
-		response += ("\n"
-		             "Info about the message:\n"
-		             f"{format_message_info(message)}")
+		response += (
+			"\n"
+			"Info about the message:\n"
+			f"{format_message_info(message)}"
+		)
+
+	if response == "":
+		response = "Error: No info found"
 
 	await update.message.reply_text(response)

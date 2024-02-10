@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from __future__ import annotations
 from aiohttp import ClientSession
 from guilded import (
 	Attachment,
@@ -13,11 +12,13 @@ from guilded import (
 	Embed,
 	File as GuildedFile,
 	FileType,
+	Member,
 	Message as GuildedMessage,
 	User as GuildedUser,
 )
 from io import BytesIO
 from sebaubuntu_libs.liblogging import LOGE
+from typing import Any, Dict, Optional, Union
 
 from telegramma.modules.bridgey.types.platform import BasePlatform
 from telegramma.modules.bridgey.types.file import File
@@ -27,7 +28,7 @@ from telegramma.modules.bridgey.types.user import User
 
 class BridgeyGuildedClient(Client):
 	"""Guilded client that pass the message to GuildedPlatform."""
-	def __init__(self, platform: GuildedPlatform):
+	def __init__(self, platform: "GuildedPlatform"):
 		"""Initialize the client."""
 		super().__init__()
 
@@ -69,8 +70,7 @@ class GuildedPlatform(BasePlatform):
 		self.channel_id: str = self.data["channel_id"]
 		self.token: str = self.data["token"]
 
-		self.client = None
-		self.channel: ChatChannel = None
+		self.channel: Optional[ChatChannel] = None
 
 		self.client = BridgeyGuildedClient(self)
 
@@ -85,21 +85,28 @@ class GuildedPlatform(BasePlatform):
 		return self.channel is not None
 
 	async def file_to_generic(self, file: FILE_TYPE):
-		return File(platform=self,
-		            url=file.url,
-		            name=file.filename)
+		return File(
+			platform=self,
+			url=file.url,
+			name=file.filename,
+		)
 
-	async def user_to_generic(self, user: USER_TYPE):
-		return User(platform=self,
-		            name=user.display_name,
-					url=user.profile_url,
-					avatar_url=user.avatar.url if user.avatar else None)
+	async def user_to_generic(self, user: Union[USER_TYPE, Member]):
+		return User(
+			platform=self,
+			name=user.display_name,
+			url=user.profile_url,
+			avatar_url=user.avatar.url if user.avatar else None,
+		)
 
 	async def message_to_generic(self, message: MESSAGE_TYPE):
 		message_type = MessageType.TEXT
 		text = message.content
 		file = None
 		reply_to = None
+
+		if not message.author:
+			raise Exception("Author is None")
 
 		if message.attachments:
 			message_type = MessageType.DOCUMENT
@@ -117,16 +124,22 @@ class GuildedPlatform(BasePlatform):
 		if message.replied_to_ids:
 			reply_to = self.get_generic_message_id(message.replied_to_ids[0])
 
-		return Message(platform=self,
-		               message_type=message_type,
-		               user=(await self.user_to_generic(message.author)),
-					   timestamp=message.created_at,
-		               text=text,
-					   file=(await self.file_to_generic(file)) if file else None,
-					   reply_to=reply_to)
+		return Message(
+			platform=self,
+			message_type=message_type,
+			user=await self.user_to_generic(message.author),
+			timestamp=message.created_at,
+			text=text,
+			file=(await self.file_to_generic(file)) if file else None,
+			reply_to=reply_to,
+		)
 
 	async def send_message(self, message: Message, message_id: int):
 		if not self.running:
+			return
+
+		if not self.channel:
+			LOGE("Channel is not set")
 			return
 
 		title = ""
@@ -138,8 +151,11 @@ class GuildedPlatform(BasePlatform):
 			description = message.sticker_emoji
 
 		embed = Embed(title=title, description=description, timestamp=message.timestamp)
-		embed.set_author(name=str(message.user), url=message.user.url,
-		                 icon_url=message.user.avatar_url)
+		embed.set_author(
+			name=str(message.user),
+			url=message.user.url,
+			icon_url=message.user.avatar_url,
+		)
 		embed.set_footer(text=message.platform.NAME, icon_url=message.platform.ICON_URL)
 
 		if message.file:
@@ -153,8 +169,10 @@ class GuildedPlatform(BasePlatform):
 				async with ClientSession() as session:
 					try:
 						async with session.get(message.file.url, raise_for_status=True) as response:
-							file = GuildedFile(BytesIO(await response.read()),
-							                   filename=message.file.name)
+							file = GuildedFile(
+								BytesIO(await response.read()),
+								filename=message.file.name
+							)
 					except Exception as e:
 						LOGE(f"Failed to download file: {e}")
 						return
@@ -165,7 +183,7 @@ class GuildedPlatform(BasePlatform):
 			if reply_to_message_id is not None:
 				reference = await self.channel.fetch_message(reply_to_message_id)
 
-		send_kwargs = {
+		send_kwargs: Dict[str, Any] = {
 			"embed": embed,
 		}
 		if reference:

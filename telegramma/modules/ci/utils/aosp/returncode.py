@@ -7,10 +7,12 @@
 from typing import Optional
 
 class _AOSPReturnCode:
-	def __init__(self,
-	             return_code: int,
-				 string: str = "Build failed: Unknown error",
-				 log_file: Optional[str] = None):
+	def __init__(
+		self,
+		return_code: int,
+		string: str = "Build failed: Unknown error",
+		log_file: Optional[str] = None,
+	):
 		self.return_code = return_code
 		self.string = string
 		self.log_file = log_file

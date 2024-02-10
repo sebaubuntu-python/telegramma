@@ -5,10 +5,9 @@
 #
 
 from colour import Color
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Optional, Type
 
 from telegramma.api import Database
-from telegramma.modules.bridgey.types.file import File
 from telegramma.modules.bridgey.types.message import Message
 from telegramma.modules.bridgey.types.user import User
 
@@ -18,17 +17,17 @@ if TYPE_CHECKING:
 class BasePlatform:
 	"""Base class of a bridge platform"""
 	# The name of the platform
-	NAME: str = None
+	NAME: str
 	# The icon of the platform, used to indicate platform and as a fallback for user avatar
-	ICON_URL: str = None
+	ICON_URL: str
 	# The main accent color of the platform
-	ACCENT_COLOR: Color = None
+	ACCENT_COLOR: Color
 	# The "native" file type of the platform
-	FILE_TYPE: type = File
+	FILE_TYPE: Type = Any
 	# The "native" message type of the platform
-	MESSAGE_TYPE: type = Message
+	MESSAGE_TYPE: Type = Any
 	# The "native" user type of the platform
-	USER_TYPE: type = User
+	USER_TYPE: Type = Any
 
 	def __init__(self, pool, instance_name: str, data: dict):
 		"""Initialize the platform."""
@@ -42,11 +41,11 @@ class BasePlatform:
 		"""Return the name of the platform."""
 		return self.NAME
 
-	async def on_message(self, message: Message, original_message_id: int) -> None:
+	async def on_message(self, message: Message, original_message_id: Any) -> None:
 		"""A new message has been received and must be sent to other bridges."""
 		return await self.pool.on_message(message, original_message_id)
 
-	def get_generic_message_id(self, platform_message_id) -> int:
+	def get_generic_message_id(self, platform_message_id) -> Optional[int]:
 		"""Get the common ID of a message given the platform message ID."""
 		if not Database.has(self.pool.messages_key):
 			return None
@@ -71,7 +70,7 @@ class BasePlatform:
 
 		return Database.get(key)
 
-	def set_platform_message_id(self, generic_message_id: int, platform_message_id: int) -> None:
+	def set_platform_message_id(self, generic_message_id: int, platform_message_id: Any) -> None:
 		"""Set the platform message ID of a generic message."""
 		key = f"{self.pool.messages_key}.{generic_message_id}.{self.instance_name}"
 

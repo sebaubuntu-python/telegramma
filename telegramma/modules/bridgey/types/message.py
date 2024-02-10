@@ -5,7 +5,7 @@
 #
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
 	from telegramma.modules.bridgey.types.platform import BasePlatform
@@ -32,16 +32,17 @@ class Message:
 	- sticker_emoji: The emoji associated with a sticker, applicable only to MessageType.STICKER
 	- reply_to: The generic message ID of the message which this message is a reply to, None otherwise
 	"""
-	def __init__(self,
-	             platform: BasePlatform,
-	             message_type: MessageType,
-	             user: User,
-	             timestamp: datetime,
-	             text: str = "",
-	             file: File = None,
-	             sticker_emoji: str = "",
-				 reply_to: int = None,
-	            ):
+	def __init__(
+		self,
+		platform: BasePlatform,
+		message_type: MessageType,
+		user: User,
+		timestamp: datetime,
+		text: Optional[str] = None,
+		file: Optional[File] = None,
+		sticker_emoji: Optional[str] = None,
+		reply_to: Optional[int] = None,
+	):
 		"""Initialize the message."""
 		self.platform = platform
 		self.message_type = message_type

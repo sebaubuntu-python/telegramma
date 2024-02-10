@@ -16,11 +16,12 @@ CONFIG_NAMESPACE = get_config_namespace("ci")
 CHAT_ID = CONFIG_NAMESPACE.get("chat_id")
 
 class PostManager:
-	def __init__(self,
-	             header: str,
-	             infos: Dict[str, str],
-	             bot: Bot,
-	            ):
+	def __init__(
+		self,
+		header: str,
+		infos: Dict[str, str],
+		bot: Bot,
+	):
 		"""Initialize PostManager class."""
 		self.header = header
 		self.infos = infos

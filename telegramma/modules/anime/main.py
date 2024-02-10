@@ -15,9 +15,12 @@ from telegramma.modules.anime.some_random_api import SomeRandomAPIAnime
 # some-random-api.ml
 
 async def hug(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	url = await SomeRandomAPIAnime.get_hug()
 	if not url:
-		await update.message.reply_text(f"Error: Failed to give you a hug :(")
+		await update.message.reply_text("Error: Failed to give you a hug :(")
 		return
 
 	if update.message.reply_to_message:
@@ -26,9 +29,12 @@ async def hug(update: Update, context: CallbackContext):
 		await update.message.reply_animation(url)
 
 async def pat(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	url = await SomeRandomAPIAnime.get_pat()
 	if not url:
-		await update.message.reply_text(f"Error: Failed to give you a pat :(")
+		await update.message.reply_text("Error: Failed to give you a pat :(")
 		return
 
 	if update.message.reply_to_message:
@@ -37,9 +43,12 @@ async def pat(update: Update, context: CallbackContext):
 		await update.message.reply_animation(url)
 
 async def wink(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	url = await SomeRandomAPIAnime.get_wink()
 	if not url:
-		await update.message.reply_text(f"Error: Failed to give you a wink :(")
+		await update.message.reply_text("Error: Failed to give you a wink :(")
 		return
 
 	if update.message.reply_to_message:
@@ -50,14 +59,21 @@ async def wink(update: Update, context: CallbackContext):
 # senpy.club
 
 async def anigirl_holding_programming_book(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	command_name = "/anigirl_holding_programming_book"
 
-	parser = TelegramArgumentParser(prog=command_name,
-	                                description="Get a random anime girl holding a programming book")
-	parser.add_argument("language", nargs="?",
-	                    help="Specify which language you want to get an image from")
-	parser.add_argument("--languages",
-	                    help="Get a list of supported languages", action='store_true')
+	parser = TelegramArgumentParser(
+		prog=command_name,
+		description="Get a random anime girl holding a programming book"
+	)
+	parser.add_argument(
+		"language", nargs="?", help="Specify which language you want to get an image from"
+	)
+	parser.add_argument(
+		"--languages", help="Get a list of supported languages", action='store_true'
+	)
 	try:
 		args = parser.parse_args(context.args)
 	except Exception as e:
@@ -67,7 +83,7 @@ async def anigirl_holding_programming_book(update: Update, context: CallbackCont
 	if args.languages:
 		languages = await SenpyClubAPI.get_languages()
 		if not languages:
-			await update.message.reply_text(f"Error: Failed to get a list of supported languages")
+			await update.message.reply_text("Error: Failed to get a list of supported languages")
 			return
 
 		text = "\n".join([
@@ -89,11 +105,11 @@ async def anigirl_holding_programming_book(update: Update, context: CallbackCont
 		try:
 			images = await SenpyClubAPI.get_images_of_language(language)
 		except Exception:
-			await update.message.reply_text(f"Error: Failed to get an image")
+			await update.message.reply_text("Error: Failed to get an image")
 			return
 
 		if not images:
-			await update.message.reply_text(f"Error: Failed to get an image")
+			await update.message.reply_text("Error: Failed to get an image")
 			return
 
 		image = choice(images)

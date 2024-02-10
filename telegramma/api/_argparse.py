@@ -11,7 +11,7 @@ from shlex import split
 class TelegramArgumentParser(ArgumentParser):
 	"""
 	An argument parser for telegramma.
-	
+
 	Instead of calling system.exit(), this class raises an Exception with the error message
 	plus the usage message if needed.
 

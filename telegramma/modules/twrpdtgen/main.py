@@ -28,6 +28,9 @@ CHAT_ID = CONFIG_NAMESPACE.get("chat_id")
 DATA_IS_VALID = bool(GITHUB_USERNAME and GITHUB_TOKEN and GITHUB_ORG)
 
 async def twrpdtgen(update: Update, context: CallbackContext):
+	if not update.message:
+		return
+
 	if not context.args or len(context.args) != 1:
 		await update.message.reply_text("Usage: /twrpdtgen <url>")
 		return
@@ -112,10 +115,12 @@ async def twrpdtgen(update: Update, context: CallbackContext):
 	if not CHAT_ID:
 		return
 
-	await context.bot.send_message(CHAT_ID,
-	                               "TWRP device tree generated\n"
-	                               f"Codename: {device_tree.device_info.codename}\n"
-	                               f"Manufacturer: {device_tree.device_info.manufacturer}\n"
-	                               f"Build description: {device_tree.device_info.build_description}\n"
-	                               f"Device tree: {repo_url}",
-	                               disable_web_page_preview=True)
+	await context.bot.send_message(
+		CHAT_ID,
+		"TWRP device tree generated\n"
+		f"Codename: {device_tree.device_info.codename}\n"
+		f"Manufacturer: {device_tree.device_info.manufacturer}\n"
+		f"Build description: {device_tree.device_info.build_description}\n"
+		f"Device tree: {repo_url}",
+		disable_web_page_preview=True
+	)

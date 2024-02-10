@@ -4,25 +4,26 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from aiohttp import ClientSession
-from typing import Any, Dict
 from PIL import Image
+from aiohttp import ClientSession
 from io import BytesIO
 import magic
 from nio import AsyncClient, UploadResponse
 from os.path import basename
+from typing import Any, Dict, Optional
 from urllib.parse import urlparse
 
 class MatrixFile:
-	def __init__(self,
-	             upload_response: UploadResponse,
-	             decryption_keys: Dict[str, Any],
-	             filename: str,
-	             filesize: int,
-	             mime_type: str,
-				 width: int = None,
-	             height: int = None,
-	            ) -> None:
+	def __init__(
+		self,
+		upload_response: UploadResponse,
+		decryption_keys: Dict[str, Any],
+		filename: str,
+		filesize: int,
+		mime_type: str,
+		width: Optional[int] = None,
+		height: Optional[int] = None,
+	) -> None:
 		self.upload_response = upload_response
 		self.decryption_keys = decryption_keys
 		self.filename = filename
@@ -86,12 +87,11 @@ async def upload_file_to_matrix(client: AsyncClient, file: str):
 
 	mime_type: str = magic.from_buffer(file_bytes, mime=True)
 
+	width, height = None, None
 	if mime_type.startswith("image/"):
 		with BytesIO(file_bytes) as f:
 			with Image.open(f) as i:
 				width, height = i.size
-	else:
-		width, height = None, None
 
 	# first do an upload of image, then send URI of upload to room
 	with BytesIO(file_bytes) as f:
