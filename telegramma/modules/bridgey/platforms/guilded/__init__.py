@@ -48,7 +48,13 @@ class BridgeyGuildedClient(Client):
 		self.platform.channel = channel
 
 	async def on_message(self, message: GuildedMessage):
-		if message.author == self.user:
+		if not self.user:
+			LOGE("User is None")
+			return
+		if not message.author:
+			LOGE("Author is None")
+			return
+		if message.author.id == self.user.id:
 			return
 		if message.channel.id != self.platform.channel_id:
 			return
