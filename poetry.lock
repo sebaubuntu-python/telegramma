@@ -539,13 +539,13 @@ test = ["coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock", "mypy", "pre-commit",
 
 [[package]]
 name = "guilded-py"
-version = "1.13.0"
+version = "1.13.1"
 description = "An API wrapper in Python for Guilded's bot API"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "guilded.py-1.13.0-py3-none-any.whl", hash = "sha256:856efe2235756679105f4a5444c549420693f85864da33b646e134d485edac86"},
-    {file = "guilded.py-1.13.0.tar.gz", hash = "sha256:c32e07fc91a0a9d6402aa5d7ec99eccf3aa1282ba3d1596e1386b0d3e01d8dd1"},
+    {file = "guilded.py-1.13.1-py3-none-any.whl", hash = "sha256:fccd21e49bad230c6e82127b7e685b7b394ff7246068a0f010654a330f14317c"},
+    {file = "guilded.py-1.13.1.tar.gz", hash = "sha256:72c2554d5d17b109774ef361831c3a710158d485423fa4dcabbd36da8f60e494"},
 ]
 
 [package.dependencies]
@@ -1553,4 +1553,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "ecbfa5f2c91f3ed313e510bf0a37e84448c9c26cf07e34117ea5224a735a6242"
+content-hash = "d3580d1122f7d4b7017dabe696b11561078965842134351ec785810649d6adad"
