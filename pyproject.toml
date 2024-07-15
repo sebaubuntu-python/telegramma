@@ -9,7 +9,7 @@ repository = "https://github.com/sebaubuntu-python/telegramma"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-python-telegram-bot = "^21.3"
+python-telegram-bot = "^21.4"
 sebaubuntu-libs = "^1.4.5"
 twrpdtgen = "^3.0.0"
 deepl = "^1.18.0"
