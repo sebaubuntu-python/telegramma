@@ -25,7 +25,7 @@ py-cord = "^2.6.1"
 matrix-nio = ">=0.19,<0.26"
 Pillow = "^10.4.0"
 python-magic = "^0.4.27"
-"guilded.py" = "^1.13.2"
+"guilded.py" = "^1.13.3"
 
 [tool.poetry.dev-dependencies]
 
