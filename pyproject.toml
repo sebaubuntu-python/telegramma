@@ -11,7 +11,7 @@ repository = "https://github.com/sebaubuntu-python/telegramma"
 telegramma = 'telegramma.main:main'
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 python-telegram-bot = "^21.6"
 sebaubuntu-libs = "^1.5.0"
 twrpdtgen = "^3.0.0"
@@ -23,7 +23,7 @@ paramiko = "^3.5.1"
 colour = "^0.1.5"
 py-cord = "^2.6.1"
 matrix-nio = ">=0.19,<0.26"
-Pillow = "^10.4.0"
+Pillow = "^12.1.0"
 python-magic = "^0.4.27"
 
 [tool.poetry.dev-dependencies]
