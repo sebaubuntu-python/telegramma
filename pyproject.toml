@@ -22,6 +22,7 @@ GitPython = "^3.1.46"
 paramiko = "^3.5.1"
 colour = "^0.1.5"
 py-cord = "^2.6.1"
+audioop-lts = { version = "^0.2.2", python = "^3.13" }
 matrix-nio = ">=0.19,<0.26"
 Pillow = "^12.1.0"
 python-magic = "^0.4.27"
