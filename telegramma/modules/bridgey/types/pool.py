@@ -19,7 +19,6 @@ else:
 
 # Platforms
 from telegramma.modules.bridgey.platforms.discord import DiscordPlatform
-from telegramma.modules.bridgey.platforms.guilded import GuildedPlatform
 from telegramma.modules.bridgey.platforms.matrix import MatrixPlatform
 from telegramma.modules.bridgey.platforms.telegram import TelegramPlatform
 
@@ -27,7 +26,6 @@ CONFIG_NAMESPACE = get_config_namespace("bridgey")
 
 PLATFORMS: Dict[str, Type[BasePlatform]] = {
 	DiscordPlatform.NAME: DiscordPlatform,
-	GuildedPlatform.NAME: GuildedPlatform,
 	MatrixPlatform.NAME: MatrixPlatform,
 	TelegramPlatform.NAME: TelegramPlatform,
 }

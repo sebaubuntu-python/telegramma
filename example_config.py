@@ -43,20 +43,6 @@ config = {
 					"channel_id": 0,
 				},
 
-				"guilded": {
-					# The name of the platform
-					# type: str
-					"platform": "Guilded",
-
-					# Bot token
-					# type: str
-					"token": "",
-
-					# ID of the channel to bridge
-					# type: str
-					"channel_id": "",
-				},
-
 				"matrix": {
 					# The name of the platform
 					# type: str
