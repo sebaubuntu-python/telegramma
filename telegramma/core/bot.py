@@ -5,7 +5,7 @@
 #
 """telegramma bot."""
 
-from asyncio import Task, create_task, gather
+from asyncio import Task, create_task, get_event_loop, new_event_loop, set_event_loop
 from os import execl, getpid, kill
 from signal import SIGTERM
 import sys
@@ -61,6 +61,11 @@ class Bot:
 		Database.sync(force=True)
 
 	def run(self) -> None:
+		try:
+			get_event_loop()
+		except RuntimeError:
+			set_event_loop(new_event_loop())
+
 		self.application.run_polling()
 
 		if self._should_restart:
