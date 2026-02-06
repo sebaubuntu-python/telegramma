@@ -704,21 +704,21 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "deepl"
-version = "1.27.0"
+version = "1.28.0"
 description = "Python library for the DeepL API."
 optional = false
 python-versions = "<4,>=3.9"
 groups = ["main"]
 files = [
-    {file = "deepl-1.27.0-py3-none-any.whl", hash = "sha256:97cca5ed3be23353c199889c442ca7bda4c3f03327e92d7797c077d5cfc9b61f"},
-    {file = "deepl-1.27.0.tar.gz", hash = "sha256:8d83a53d958ffa96388f5ecd6425a9d9d931144c16c05c7a84eceb9a1454bb92"},
+    {file = "deepl-1.28.0-py3-none-any.whl", hash = "sha256:d43ae248f74a81150765e303cc62aef7d2ddbf40f2d5454a6b4cf3f54ac69619"},
+    {file = "deepl-1.28.0.tar.gz", hash = "sha256:7b35816ca8ff40609746586145ec3e9d7c758b546f353ea73f24118e56a1fdad"},
 ]
 
 [package.dependencies]
-requests = ">=2.32.4"
+requests = ">=2.32.5"
 
 [package.extras]
-keyring = ["keyring (>=23.4.1,<24.0.0)"]
+keyring = ["keyring (>=25.7.0,<26.0.0)"]
 
 [[package]]
 name = "exceptiongroup"
@@ -2295,4 +2295,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "815a2da9361c179d3f4fd98442a2c8b07ade0ff46c9bbb1b98e09317fe36a299"
+content-hash = "5d4dcd2de536d516b70645bcc3b825b4b20dddbc5e07b0cb27e7834c597d4072"
