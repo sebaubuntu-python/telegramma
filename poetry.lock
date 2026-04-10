@@ -704,14 +704,14 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "deepl"
-version = "1.29.0"
+version = "1.30.0"
 description = "Python library for the DeepL API."
 optional = false
 python-versions = "<4,>=3.9"
 groups = ["main"]
 files = [
-    {file = "deepl-1.29.0-py3-none-any.whl", hash = "sha256:23046778dfb173d22cf6306e6a7c182f3bfabfbdff9e52e746fc960c65c475ec"},
-    {file = "deepl-1.29.0.tar.gz", hash = "sha256:494b1606c4885aa8a8e1f34fa516865c12e2bc27d6b159147f2ce06782e125ec"},
+    {file = "deepl-1.30.0-py3-none-any.whl", hash = "sha256:b4e08ef484522ba62ba4895a9c43a980981b07d2e989cc99b5ee68e00d3675c3"},
+    {file = "deepl-1.30.0.tar.gz", hash = "sha256:491da545da6f6145db69a19bc4460a8fb66b29307c68d55f9297910cdcb577d9"},
 ]
 
 [package.dependencies]
@@ -2296,4 +2296,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "3117974700f04ac48ef83f48b8707fe22c3a110c81b48b6a90e97608c10f9c4a"
+content-hash = "5a2cdf22574808ffb248c9454573f9eb748b5bdac3bb0fa9d1d0f83f10c51597"
