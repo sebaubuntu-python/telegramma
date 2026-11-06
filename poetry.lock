@@ -736,14 +736,14 @@ ssh = ["bcrypt (>=3.1.5)"]
 
 [[package]]
 name = "deepl"
-version = "1.32.0"
+version = "1.33.0"
 description = "Python library for the DeepL API."
 optional = false
 python-versions = "<4,>=3.9"
 groups = ["main"]
 files = [
-    {file = "deepl-1.32.0-py3-none-any.whl", hash = "sha256:36f2faadc79a64712489bfeab32f344536eab25b3c38ea2e39a72084a71e0a7e"},
-    {file = "deepl-1.32.0.tar.gz", hash = "sha256:3016bf86f1f53eb6e5fedb458746c6bf6579a840b57c54a2ed701b0344bc79e1"},
+    {file = "deepl-1.33.0-py3-none-any.whl", hash = "sha256:68f59500c65998e3b6a250060820f3e3552b739314dde996375272f7aa27bf66"},
+    {file = "deepl-1.33.0.tar.gz", hash = "sha256:ddec330fc7b617406131fed81137fd3bb43d1bae03ecbd48c8b8e9cb5851e303"},
 ]
 
 [package.dependencies]
